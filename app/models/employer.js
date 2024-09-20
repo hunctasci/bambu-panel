@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const EmployerSchema = new mongoose.Schema({
   name: {
@@ -39,4 +39,6 @@ const EmployerSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Employer", EmployerSchema);
+const Employer = mongoose.model("Employer", EmployerSchema);
+
+export default Employer;

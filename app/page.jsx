@@ -1,8 +1,10 @@
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import EmployeeTable from "@/components/employees/EmployeeTable";
 import { Users, BriefcaseBusiness } from "lucide-react";
+import { fetchEmployees } from "@/lib/data";
 
 export default function Home() {
+  fetchEmployees();
   return (
     <>
       <div className="mb-5 flex flex-col justify-between gap-5 md:flex-row">

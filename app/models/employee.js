@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 // Schema for Employment History (to reference employers and add notes)
 const EmploymentHistorySchema = new mongoose.Schema({
@@ -38,24 +38,24 @@ const EmployeeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  avatarImage: {
-    type: String, // File path to the image
-    validate: {
-      validator: function (value) {
-        // Assuming the image is saved locally, we can validate its size before saving
-        const fs = require("fs");
-        const stats = fs.statSync(value);
-        const fileSizeInBytes = stats.size;
-        const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
-        return fileSizeInMB <= 2; // Limit to 2MB
-      },
-      message: "Avatar image should not exceed 2MB.",
-    },
-  },
+  // avatarImage: {
+  //   type: String, // File path to the image
+  //   validate: {
+  //     validator: function (value) {
+  //       // Assuming the image is saved locally, we can validate its size before saving
+  //       const fs = require("fs");
+  //       const stats = fs.statSync(value);
+  //       const fileSizeInBytes = stats.size;
+  //       const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+  //       return fileSizeInMB <= 2; // Limit to 2MB
+  //     },
+  //     message: "Avatar image should not exceed 2MB.",
+  //   },
+  // },
   employmentHistory: [EmploymentHistorySchema],
 });
 
 const Employee =
   mongoose.models.Employee || mongoose.model("Employee", EmployeeSchema);
 
-module.exports = Employee;
+export default Employee;
