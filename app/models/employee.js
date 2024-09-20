@@ -40,7 +40,6 @@ const EmployeeSchema = new mongoose.Schema({
   },
   avatarImage: {
     type: String, // File path to the image
-    required: true,
     validate: {
       validator: function (value) {
         // Assuming the image is saved locally, we can validate its size before saving

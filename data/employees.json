@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Alice",
+    "surname": "Johnson",
+    "dateOfBirth": "1995-07-15",
+    "competence": ["Bebek Bakicisi"],
+    "address": "245 Birch Ave",
+    "telephoneNumber": "555-123-1111"
+  },
+  {
+    "name": "Bob",
+    "surname": "Williams",
+    "dateOfBirth": "1990-11-20",
+    "competence": ["Temizlik Elemani"],
+    "address": "358 Oak Blvd",
+    "telephoneNumber": "555-456-2222"
+  },
+  {
+    "name": "Charlie",
+    "surname": "Brown",
+    "dateOfBirth": "1985-02-27",
+    "competence": ["Yasli Bakici"],
+    "address": "963 Maple Cir",
+    "telephoneNumber": "555-789-3333"
+  },
+  {
+    "name": "Diana",
+    "surname": "Garcia",
+    "dateOfBirth": "1992-05-18",
+    "competence": ["Bebek Bakicisi"],
+    "address": "741 Pine Way",
+    "telephoneNumber": "555-321-4444"
+  },
+  {
+    "name": "Ethan",
+    "surname": "Martinez",
+    "dateOfBirth": "1987-09-09",
+    "competence": ["Temizlik Elemani"],
+    "address": "852 Spruce St",
+    "telephoneNumber": "555-654-5555"
+  },
+  {
+    "name": "Fiona",
+    "surname": "Taylor",
+    "dateOfBirth": "1996-12-22",
+    "competence": ["Yasli Bakici"],
+    "address": "123 Elm Ave",
+    "telephoneNumber": "555-987-6666"
+  },
+  {
+    "name": "George",
+    "surname": "Moore",
+    "dateOfBirth": "1991-10-10",
+    "competence": ["Bebek Bakicisi"],
+    "address": "654 Cedar St",
+    "telephoneNumber": "555-321-7777"
+  },
+  {
+    "name": "Hannah",
+    "surname": "Martinez",
+    "dateOfBirth": "1989-03-30",
+    "competence": ["Temizlik Elemani"],
+    "address": "789 Redwood Ln",
+    "telephoneNumber": "555-654-8888"
+  },
+  {
+    "name": "Isaac",
+    "surname": "Perez",
+    "dateOfBirth": "1993-01-15",
+    "competence": ["Yasli Bakici"],
+    "address": "963 Ash Cir",
+    "telephoneNumber": "555-789-9999"
+  },
+  {
+    "name": "Isabella",
+    "surname": "White",
+    "dateOfBirth": "1994-11-25",
+    "competence": ["Bebek Bakicisi"],
+    "address": "159 Maple Blvd",
+    "telephoneNumber": "555-987-1010"
+  }
+]

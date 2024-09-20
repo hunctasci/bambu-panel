@@ -1,0 +1,82 @@
+[
+  {
+    "name": "John",
+    "surname": "Doe",
+    "dateOfBirth": "1970-05-25",
+    "address": "123 Main St",
+    "telephoneNumber": "555-123-4567",
+    "placeType": "Office"
+  },
+  {
+    "name": "Jane",
+    "surname": "Smith",
+    "dateOfBirth": "1982-11-11",
+    "address": "456 Oak Ave",
+    "telephoneNumber": "555-987-6543",
+    "placeType": "Apartment"
+  },
+  {
+    "name": "Michael",
+    "surname": "Johnson",
+    "dateOfBirth": "1965-07-08",
+    "address": "789 Pine Ln",
+    "telephoneNumber": "555-321-9876",
+    "placeType": "Villa"
+  },
+  {
+    "name": "Emily",
+    "surname": "Davis",
+    "dateOfBirth": "1978-03-17",
+    "address": "321 Maple Rd",
+    "telephoneNumber": "555-654-7890",
+    "placeType": "Office"
+  },
+  {
+    "name": "Robert",
+    "surname": "Wilson",
+    "dateOfBirth": "1990-02-19",
+    "address": "654 Cedar St",
+    "telephoneNumber": "555-987-1234",
+    "placeType": "Apartment"
+  },
+  {
+    "name": "Jessica",
+    "surname": "Brown",
+    "dateOfBirth": "1985-09-30",
+    "address": "987 Elm Blvd",
+    "telephoneNumber": "555-654-3210",
+    "placeType": "Villa"
+  },
+  {
+    "name": "Daniel",
+    "surname": "Miller",
+    "dateOfBirth": "1969-12-12",
+    "address": "741 Birch Way",
+    "telephoneNumber": "555-321-4567",
+    "placeType": "Office"
+  },
+  {
+    "name": "Sarah",
+    "surname": "Moore",
+    "dateOfBirth": "1975-01-05",
+    "address": "852 Spruce Dr",
+    "telephoneNumber": "555-456-7890",
+    "placeType": "Apartment"
+  },
+  {
+    "name": "David",
+    "surname": "Taylor",
+    "dateOfBirth": "1992-04-27",
+    "address": "963 Ash Cir",
+    "telephoneNumber": "555-789-1234",
+    "placeType": "Villa"
+  },
+  {
+    "name": "Laura",
+    "surname": "Anderson",
+    "dateOfBirth": "1988-08-08",
+    "address": "159 Redwood Ln",
+    "telephoneNumber": "555-987-4567",
+    "placeType": "Office"
+  }
+]
