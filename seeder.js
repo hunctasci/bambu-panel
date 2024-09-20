@@ -1,8 +1,14 @@
-const fs = require("fs");
-const mongoose = require("mongoose");
+import fs from "fs";
+import mongoose from "mongoose";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const Employee = require("./app/models/employee");
-const Employer = require("./app/models/employer");
+import Employee from "./app/models/employee.js";
+import Employer from "./app/models/employer.js";
+
+// Manually create __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 mongoose.connect("mongodb://localhost:27017/bambuApp");
 
