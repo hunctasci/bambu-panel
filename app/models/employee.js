@@ -55,4 +55,7 @@ const EmployeeSchema = new mongoose.Schema({
   employmentHistory: [EmploymentHistorySchema],
 });
 
-module.exports = mongoose.model("Employee", EmployeeSchema);
+const Employee =
+  mongoose.models.Employee || mongoose.model("Employee", EmployeeSchema);
+
+module.exports = Employee;

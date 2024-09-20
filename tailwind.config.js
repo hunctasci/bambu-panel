@@ -9,45 +9,49 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        primary: {
+          DEFAULT: "hsl(122, 52%, 22%)",
+          foreground: "hsl(0, 0%, 100%)",
+          light: "hsl(122, 52%, 32%)",
+          dark: "hsl(122, 52%, 12%)",
+        },
+        secondary: {
+          DEFAULT: "hsl(46, 96%, 71%)",
+          foreground: "hsl(0, 0%, 10%)",
+          light: "hsl(46, 96%, 81%)",
+          dark: "hsl(46, 96%, 61%)",
+        },
         background: "hsl(200, 17%, 96%)",
         foreground: "hsl(0, 0%, 10%)",
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "hsl(0, 0%, 100%)",
+          foreground: "hsl(0, 0%, 10%)",
         },
         popover: {
           DEFAULT: "hsl(46, 96%, 93%)",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        primary: {
-          DEFAULT: "hsl(122, 52%, 22%)", // dark green
-          foreground: "hsl(0, 0%, 100%)", // white foreground text,
-        },
-        secondary: {
-          DEFAULT: "hsl(46, 96%, 71%)", // warm yellow
-          foreground: "hsl(0, 0%, 10%)", // dark text on secondary
+          foreground: "hsl(0, 0%, 10%)",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "hsl(200, 17%, 86%)",
+          foreground: "hsl(0, 0%, 40%)",
         },
         accent: {
           DEFAULT: "hsl(46, 96%, 81%)",
-          foreground: "hsl(var(--accent-foreground))",
+          foreground: "hsl(0, 0%, 10%)",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "hsl(0, 84%, 60%)",
+          foreground: "hsl(0, 0%, 100%)",
         },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
+        border: "hsl(200, 17%, 86%)",
+        input: "hsl(200, 17%, 86%)",
+        ring: "hsl(122, 52%, 22%)",
         chart: {
-          1: "hsl(var(--chart-1))",
-          2: "hsl(var(--chart-2))",
-          3: "hsl(var(--chart-3))",
-          4: "hsl(var(--chart-4))",
-          5: "hsl(var(--chart-5))",
+          1: "hsl(122, 52%, 22%)",
+          2: "hsl(46, 96%, 71%)",
+          3: "hsl(200, 17%, 96%)",
+          4: "hsl(122, 52%, 32%)",
+          5: "hsl(46, 96%, 81%)",
         },
       },
       borderRadius: {

@@ -1,4 +1,5 @@
 import DashboardCard from "@/components/dashboard/DashboardCard";
+import EmployeeTable from "@/components/employees/EmployeeTable";
 import { Users, BriefcaseBusiness } from "lucide-react";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
           icon={<BriefcaseBusiness className="text-slate-500" size={72} />}
         />
       </div>
+      <EmployeeTable title="Latest Employees" />
     </>
   );
 }
