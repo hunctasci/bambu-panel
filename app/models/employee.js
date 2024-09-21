@@ -53,6 +53,16 @@ const EmployeeSchema = new mongoose.Schema({
   //   },
   // },
   employmentHistory: [EmploymentHistorySchema],
+  timestamps: {
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
 });
 
 const Employee =

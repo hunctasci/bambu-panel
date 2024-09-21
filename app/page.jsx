@@ -19,7 +19,7 @@ export default function Home() {
           icon={<BriefcaseBusiness className="text-slate-500" size={72} />}
         />
       </div>
-      <EmployeeTable title="Latest Employees" />
+      <EmployeeTable title="Latest Employees" limit={5} />
     </>
   );
 }

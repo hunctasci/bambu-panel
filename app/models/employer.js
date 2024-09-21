@@ -37,6 +37,16 @@ const EmployerSchema = new mongoose.Schema({
     enum: ["Office", "Apartment", "Villa"], // Renamed for clarity
     required: true,
   },
+  timestamps: {
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
 });
 
 const Employer = mongoose.model("Employer", EmployerSchema);

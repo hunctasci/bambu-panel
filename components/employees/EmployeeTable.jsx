@@ -18,6 +18,11 @@ export default async function EmployeeTable({ limit, title }) {
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
   );
 
+  // Filter employees based on limit
+  const filteredEmployees = limit
+    ? sortedEmployees.slice(0, limit)
+    : sortedEmployees;
+
   return (
     <div className="mt-10">
       <h3 className="mb-4 text-2xl font-semibold">
@@ -35,7 +40,7 @@ export default async function EmployeeTable({ limit, title }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {employees.map((employee) => (
+          {filteredEmployees.map((employee) => (
             <TableRow key={employee._id}>
               <TableCell>{employee.name}</TableCell>
               <TableCell>{employee.surname}</TableCell>
