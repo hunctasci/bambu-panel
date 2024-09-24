@@ -2,17 +2,34 @@ import Search from "@/app/ui/anasayfa/search/search";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-import { MdEdit, MdOutlineVisibility } from "react-icons/md";
+import { EmployerType, columns } from "./columns";
 
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+// import { MdEdit, MdOutlineVisibility } from "react-icons/md";
+
+// import {
+//   Table,
+//   TableBody,
+//   TableCaption,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "@/components/ui/table";
+import { DataTable } from "@/components/ui/data-table";
+import connectToDB from "@/lib/db";
+
+async function getData(): Promise<EmployerType[]> {
+  connectToDB();
+  try {
+    const data = await Employer.find(); // Fetch all employers from the collection
+    return data; // Return the fetched employers
+  } catch (error) {
+    console.error(
+      `Failed to fetch data: ${error instanceof Error ? error.message : "Unknown error"}`,
+    );
+    throw error;
+  }
+}
 
 export default function EmployersPage() {
   return (
@@ -23,7 +40,7 @@ export default function EmployersPage() {
           <Link href="/anasayfa/musteriler/ekle">Musteri Ekle</Link>
         </Button>
       </div>
-      <div className="pt-3">
+      {/* <div className="pt-3">
         <Table>
           <TableCaption>Musterilerinizin listesi.</TableCaption>
           <TableHeader>
@@ -60,7 +77,8 @@ export default function EmployersPage() {
             </TableRow>
           </TableBody>
         </Table>
-      </div>
+      </div> */}
+      <DataTable columns={columns} data={data} />
     </div>
   );
 }

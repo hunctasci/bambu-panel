@@ -19,6 +19,7 @@ import {
 } from "react-icons/md";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -67,8 +68,9 @@ export default function Navbar() {
         </DropdownMenu>
       </div>
       <div className="font-bold capitalize">{pathname.split("/").pop()}</div>
-      <div>
+      <div className="flex gap-3">
         <Input placeholder="Arama" />
+        <ModeToggle />
       </div>
     </div>
   );

@@ -1,0 +1,201 @@
+[
+  {
+    "name": "Ayşe",
+    "surname": "Kara",
+    "dateOfBirth": "1975-03-20T00:00:00.000Z",
+    "address": "İstanbul, Beşiktaş",
+    "telephoneNumber": "+905012345678",
+    "placeType": "Müstakil",
+    "hasPets": true,
+    "healthCondition": {
+      "condition": "Astım"
+    },
+    "children": [
+      {
+        "age": 5,
+        "count": 2
+      }
+    ],
+    "weight": 70,
+    "notes": "Evcil hayvanları var, çocuk bakımı istiyor."
+  },
+  {
+    "name": "Mehmet",
+    "surname": "Yılmaz",
+    "dateOfBirth": "1980-08-15T00:00:00.000Z",
+    "address": "Ankara, Çankaya",
+    "telephoneNumber": "+905023456789",
+    "placeType": "Dublex",
+    "hasPets": false,
+    "healthCondition": {
+      "condition": "Yüksek tansiyon"
+    },
+    "children": [
+      {
+        "age": 10,
+        "count": 1
+      }
+    ],
+    "weight": 80,
+    "notes": "Yaşlı bakımı için yardım arıyor."
+  },
+  {
+    "name": "Fatma",
+    "surname": "Öztürk",
+    "dateOfBirth": "1990-05-30T00:00:00.000Z",
+    "address": "İzmir, Konak",
+    "telephoneNumber": "+905034567890",
+    "placeType": "Normal Daire",
+    "hasPets": true,
+    "healthCondition": {
+      "condition": "Diyabet"
+    },
+    "children": [
+      {
+        "age": 3,
+        "count": 1
+      }
+    ],
+    "weight": 65,
+    "notes": "Evdeki tüm işlerin yapılmasını istiyor."
+  },
+  {
+    "name": "Ali",
+    "surname": "Çelik",
+    "dateOfBirth": "1985-12-10T00:00:00.000Z",
+    "address": "Bursa, Nilüfer",
+    "telephoneNumber": "+905045678901",
+    "placeType": "Müstakil",
+    "hasPets": false,
+    "healthCondition": {
+      "condition": "Sağlıklı"
+    },
+    "children": [
+      {
+        "age": 7,
+        "count": 1
+      },
+      {
+        "age": 2,
+        "count": 1
+      }
+    ],
+    "weight": 75,
+    "notes": "Çocukları için bir dadı arıyor."
+  },
+  {
+    "name": "Burcu",
+    "surname": "Aydın",
+    "dateOfBirth": "1992-07-25T00:00:00.000Z",
+    "address": "Antalya, Muratpaşa",
+    "telephoneNumber": "+905056789012",
+    "placeType": "Dublex",
+    "hasPets": true,
+    "healthCondition": {
+      "condition": "Alerji"
+    },
+    "children": [
+      {
+        "age": 4,
+        "count": 1
+      }
+    ],
+    "weight": 68,
+    "notes": "Evcil hayvanlar ile birlikte çalışacak bir eleman arıyor."
+  },
+  {
+    "name": "Can",
+    "surname": "Yücel",
+    "dateOfBirth": "1978-01-01T00:00:00.000Z",
+    "address": "Kayseri, Melikgazi",
+    "telephoneNumber": "+905067890123",
+    "placeType": "Normal Daire",
+    "hasPets": false,
+    "healthCondition": {
+      "condition": "Yüksek tansiyon"
+    },
+    "children": [
+      {
+        "age": 12,
+        "count": 2
+      }
+    ],
+    "weight": 85,
+    "notes": "Hasta bakımı konusunda yardım arıyor."
+  },
+  {
+    "name": "Selin",
+    "surname": "Koç",
+    "dateOfBirth": "1983-09-30T00:00:00.000Z",
+    "address": "İstanbul, Kadıköy",
+    "telephoneNumber": "+905078901234",
+    "placeType": "Müstakil",
+    "hasPets": true,
+    "healthCondition": {
+      "condition": "Psikolojik rahatsızlık"
+    },
+    "children": [
+      {
+        "age": 5,
+        "count": 1
+      }
+    ],
+    "weight": 60,
+    "notes": "Çocuk bakımı ve ev işlerine yardımcı olacak bir eleman arıyor."
+  },
+  {
+    "name": "Oğuz",
+    "surname": "Kurt",
+    "dateOfBirth": "1989-06-15T00:00:00.000Z",
+    "address": "Ankara, Sincan",
+    "telephoneNumber": "+905089012345",
+    "placeType": "Dublex",
+    "hasPets": true,
+    "healthCondition": {
+      "condition": "Kalp rahatsızlığı"
+    },
+    "children": [
+      {
+        "age": 8,
+        "count": 1
+      }
+    ],
+    "weight": 77,
+    "notes": "Evdeki hayvanlarla ilgilenecek bir eleman gerekiyor."
+  },
+  {
+    "name": "Deniz",
+    "surname": "Polat",
+    "dateOfBirth": "1995-04-25T00:00:00.000Z",
+    "address": "İzmir, Buca",
+    "telephoneNumber": "+905091234567",
+    "placeType": "Normal Daire",
+    "hasPets": false,
+    "healthCondition": {
+      "condition": "Sağlıklı"
+    },
+    "children": [],
+    "weight": 65,
+    "notes": "Yeni doğan bebek için yardımcı arıyor."
+  },
+  {
+    "name": "Merve",
+    "surname": "Arslan",
+    "dateOfBirth": "1987-11-11T00:00:00.000Z",
+    "address": "Bursa, Osmangazi",
+    "telephoneNumber": "+905012345678",
+    "placeType": "Müstakil",
+    "hasPets": false,
+    "healthCondition": {
+      "condition": "Diyabet"
+    },
+    "children": [
+      {
+        "age": 6,
+        "count": 1
+      }
+    ],
+    "weight": 70,
+    "notes": "Ev işlerinde deneyimli bir eleman arıyor."
+  }
+]
