@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import Employee from "./app/models/employee.js";
-import Employer from "./app/models/employer.js";
+import Employee from "./dist/app/models/employee.js"; // Adjusted path
+import Employer from "./dist/app/models/employer.js"; // Adjusted path
 
 // Manually create __dirname
 const __filename = fileURLToPath(import.meta.url);

@@ -63,16 +63,16 @@ export function DataTable<TData, TValue>({
       columnVisibility,
     },
   });
-
+  // console.log(data);
   return (
     <div>
       <div className="flex items-center justify-center">
         <div className="flex items-center py-4">
           <Input
             placeholder="Filter names..."
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            value={(table.getColumn("ad")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
+              table.getColumn("ad")?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
           />

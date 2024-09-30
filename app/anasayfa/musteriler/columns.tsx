@@ -8,156 +8,168 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDown } from "lucide-react";
+import Link from "next/link";
 
-// Define the Zod schema for Employer data
 export type EmployerType = {
-  name: string;
-  surname: string;
-  dateOfBirth: Date; // Use Date for date handling
-  address: string;
-  telephoneNumber: string;
-  placeType: "Müstakil" | "Dublex" | "Normal Daire";
-  hasPets: boolean;
-  healthCondition?: {
-    // Make optional to match schema
-    condition?: string | null; // Allow for null values
-  } | null; // Allow healthCondition itself to be null
-  children?: {
-    // Make optional to match schema
-    age: number;
-    count: number;
-  }[]; // Optional array to indicate no children
-  weight?: number; // Make optional to match schema
-  notes?: string; // Make optional to match schema
+  _id: string;
+  ad: string; // Name
+  soyad: string; // Surname
+  dogumTarihi: Date; // Date of Birth
+  adres: string; // Address
+  telefonNumarasi: string; // Telephone Number
+  yerTipi: "Müstakil" | "Dublex" | "Normal Daire"; // Place Type
+  evcilHayvan: boolean; // Has Pets
+  saglikDurumu?: string; // Health condition (optional)
+  cocuklar?: string; // Optional array to indicate no children
+  kilo?: number; // Weight
+  notlar?: string; // Notes
 };
 
 export const columns: ColumnDef<EmployerType>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "ad",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="whitespace-normal"
       >
-        Name
+        Ad
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
   },
   {
-    accessorKey: "surname",
+    accessorKey: "soyad",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="whitespace-normal"
       >
-        Surname
+        Soyad
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
   },
   {
-    accessorKey: "dateOfBirth",
+    accessorKey: "dogumTarihi",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="whitespace-normal"
       >
-        Date of Birth
+        Doğum Tarihi
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => {
       const value = getValue() as Date | string;
+
+      // Convert value to Date object and format it in Turkish locale
+      const date = value instanceof Date ? value : new Date(value);
+
+      // Check if the date is valid before formatting
       return (
         <div className="text-left">
-          {value instanceof Date
-            ? value.toLocaleDateString()
-            : new Date(value).toLocaleDateString()}
+          {!isNaN(date.getTime())
+            ? date.toLocaleDateString("tr-TR")
+            : "Invalid Date"}
         </div>
       );
     },
   },
+
   {
-    accessorKey: "address",
+    accessorKey: "adres",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="whitespace-normal"
       >
-        Address
+        Adres
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
   },
   {
-    accessorKey: "telephoneNumber",
-    header: () => <div className="text-left">Telephone</div>,
+    accessorKey: "telefonNumarasi",
+    header: () => (
+      <div className="whitespace-normal text-left">Telefon Numarası</div>
+    ),
   },
   {
-    accessorKey: "placeType",
+    accessorKey: "yerTipi",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="whitespace-normal"
       >
-        Place Type
+        Yer Tipi
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
   },
   {
-    accessorKey: "hasPets",
+    accessorKey: "evcilHayvan",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="whitespace-normal"
       >
-        Has Pets
+        Evcil Hayvan
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => (
-      <div className="text-left">{getValue() ? "Yes" : "No"}</div>
+      <div className="text-left">{getValue() ? "Evet" : "Hayır"}</div>
     ),
   },
   {
-    accessorKey: "healthCondition.condition",
+    accessorKey: "saglikDurumu", // Accessing the string directly
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="whitespace-normal"
       >
-        Health Condition
+        Sağlık Durumu
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => {
-      const condition = getValue() as string | null | undefined;
+      const condition = getValue() as string | undefined;
       return (
         <div className="text-left">
-          {condition ? condition : "No health condition"}
+          {condition ? condition : "Sağlık durumu yok"}
         </div>
       );
     },
   },
   {
-    accessorKey: "children",
+    accessorKey: "cocuklar",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="whitespace-normal"
       >
-        Children
+        Çocuklar
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => {
       const children = getValue() as
-        | { age: number; count: number }[]
+        | { yas: number; sayi: number }[]
         | undefined;
       return (
         <div className="text-left">
@@ -165,22 +177,23 @@ export const columns: ColumnDef<EmployerType>[] = [
             ? children
                 .map(
                   (child, index) =>
-                    `Child ${index + 1}: Age ${child.age}, Count ${child.count}`,
+                    `Çocuk ${index + 1}: Yaş ${child.yas}, Sayı ${child.sayi}`,
                 )
                 .join(", ")
-            : "No children"}
+            : "Çocuk yok"}
         </div>
       );
     },
   },
   {
-    accessorKey: "weight",
+    accessorKey: "kilo",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="whitespace-normal"
       >
-        Weight (kg)
+        Kilo (kg)
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
@@ -189,15 +202,17 @@ export const columns: ColumnDef<EmployerType>[] = [
     ),
   },
   {
-    accessorKey: "notes",
-    header: () => <div className="text-left">Notes</div>,
+    accessorKey: "notlar",
+    header: () => <div className="whitespace-normal text-left">Notlar</div>,
     cell: ({ getValue }) => (
       <div className="text-left">{getValue<string>()}</div>
     ),
   },
   {
     id: "actions",
-    cell: () => {
+    cell: ({ row }) => {
+      const employerId = row.original._id;
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -207,10 +222,9 @@ export const columns: ColumnDef<EmployerType>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>Goruntule</DropdownMenuItem>
-            <DropdownMenuItem>Duzenle</DropdownMenuItem>
-            <DropdownMenuItem>PDF&apos;ini al</DropdownMenuItem>
-            <DropdownMenuItem>Sil</DropdownMenuItem>
+            <Link href={`/anasayfa/musteriler/${employerId}`} passHref>
+              <DropdownMenuItem>Görüntüle</DropdownMenuItem>
+            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
       );

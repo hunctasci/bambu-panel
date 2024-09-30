@@ -1,35 +1,41 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface EmployerType extends Document {
-  name: string;
-  surname: string;
-  dateOfBirth: Date;
-  address: string;
-  telephoneNumber: string;
-  placeType: 'Müstakil' | 'Dublex' | 'Normal Daire';
-  hasPets: boolean;
-  healthCondition: { condition: string };
-  children: { age: number; count: number }[];
-  weight: number;
-  notes: string;
+  ad: string; // Name
+  soyad: string; // Surname
+  dogumTarihi: Date; // Date of Birth
+  adres: string; // Address
+  telefonNumarasi: string; // Telephone Number
+  yerTipi: "Müstakil" | "Dublex" | "Normal Daire"; // Place Type
+  evcilHayvan: boolean; // Has Pets
+  saglikDurumu: string; // Health Condition
+  cocuklar: string; // Children
+  kilo: number; // Weight
+  notlar: string; // Notes
 }
 
 const EmployerSchema = new Schema(
   {
-    name: { type: String, required: true },
-    surname: { type: String, required: true },
-    dateOfBirth: { type: Date, required: true },
-    address: { type: String, required: true },
-    telephoneNumber: { type: String, required: true },
-    placeType: { type: String, enum: ['Müstakil', 'Dublex', 'Normal Daire'], required: true },
-    hasPets: { type: Boolean, default: false },
-    healthCondition: { condition: String },
-    children: [{ age: Number, count: Number }],
-    weight: { type: Number },
-    notes: { type: String },
+    ad: { type: String, required: true }, // Name
+    soyad: { type: String, required: true }, // Surname
+    dogumTarihi: { type: Date, required: true }, // Date of Birth
+    adres: { type: String, required: true }, // Address
+    telefonNumarasi: { type: String, required: true }, // Telephone Number
+    yerTipi: {
+      type: String,
+      enum: ["Müstakil", "Dublex", "Normal Daire"], // Place Type
+      required: true,
+    },
+    evcilHayvan: { type: Boolean, default: false }, // Has Pets
+    saglikDurumu: { type: String }, // Health Condition
+    cocuklar: { type: String }, // Children
+    kilo: { type: Number }, // Weight
+    notlar: { type: String }, // Notes
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const Employer = mongoose.models.Employer || mongoose.model<EmployerType>("Employer", EmployerSchema);
+const Employer =
+  mongoose.models.Employer ||
+  mongoose.model<EmployerType>("Employer", EmployerSchema);
 export default Employer;

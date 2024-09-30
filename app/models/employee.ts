@@ -1,21 +1,41 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-// Define the Employee Schema
-const EmployeeSchema = new mongoose.Schema(
+export interface EmployeeType extends Document {
+  ad: string; // Name
+  soyad: string; // Surname
+  dogumTarihi: Date; // Date of Birth
+  yeterlilik: (
+    | "evIsiElemanlari"
+    | "hastaBakimi"
+    | "yasliBakimi"
+    | "bebekBakimi"
+    | "yatalakBakan"
+    | "alzheimerBakan"
+    | "dadiYeniDogan"
+    | "cocukBakimi"
+    | "asci"
+    | "sofor"
+    | "oyunAblasi"
+  )[]; // Competence
+  adres: string; // Address
+  telefonNumarasi: string; // Telephone Number
+  medeniDurum: "Evli" | "Bekar"; // Marital Status
+  cocukSahibi: boolean; // Has Children
+  oncekiIsverenler: string; // Previous Employers
+  referanslar: string; // References
+  evcilHayvan: boolean; // Works With Pets
+  uyruk: string; // Nationality
+  oturumIzni: boolean; // Residency Permit
+  seyahatKisitlamasi: boolean; // Travel Restriction
+  notlar: string; // Notes
+}
+
+const EmployeeSchema = new Schema(
   {
-    name: {
-      type: String,
-      required: true,
-    },
-    surname: {
-      type: String,
-      required: true,
-    },
-    dateOfBirth: {
-      type: Date,
-      required: true,
-    },
-    competence: {
+    ad: { type: String, required: true }, // Name
+    soyad: { type: String, required: true }, // Surname
+    dogumTarihi: { type: Date, required: true }, // Date of Birth
+    yeterlilik: {
       type: [String],
       enum: [
         "evIsiElemanlari",
@@ -23,59 +43,32 @@ const EmployeeSchema = new mongoose.Schema(
         "yasliBakimi",
         "bebekBakimi",
         "yatalakBakan",
-        "ayzaymerBakan",
+        "alzheimerBakan",
         "dadiYeniDogan",
         "cocukBakimi",
         "asci",
         "sofor",
         "oyunAblasi",
-      ],
+      ], // Competence
       required: true,
     },
-    address: {
-      type: String,
-      required: true,
-    },
-    telephoneNumber: {
-      type: String,
-      required: true,
-    },
-    maritalStatus: {
-      type: String,
-      enum: ["Evli", "Bekar"], // Marital status options
-    },
-    hasChildren: {
-      type: Boolean, // Whether the employee has children or not
-      default: false,
-    },
-    previousEmployers: {
-      type: String, // Previous employers or places of work (not a reference)
-    },
-    references: {
-      type: String, // Reference information
-    },
-    worksWithPets: {
-      type: Boolean, // Whether the employee is willing to work with pets
-    },
-    afraidOfAnimals: {
-      type: Boolean, // Whether the employee is afraid of animals
-    },
-    nationality: {
-      type: String, // Employee's nationality
-    },
-    residencyPermit: {
-      type: Boolean, // Whether the employee has a residency permit
-    },
-    travelRestriction: {
-      type: Boolean, // Whether the employee has travel restrictions
-    },
-    notes: {
-      type: String, // Additional notes
-    },
+    adres: { type: String, required: true }, // Address
+    telefonNumarasi: { type: String, required: true }, // Telephone Number
+    medeniDurum: { type: String, enum: ["Evli", "Bekar"] }, // Marital Status
+    cocukSahibi: { type: Boolean, default: false }, // Has Children
+    oncekiIsverenler: { type: String }, // Previous Employers
+    referanslar: { type: String }, // References
+    evcilHayvan: { type: Boolean }, // Works With Pets
+    uyruk: { type: String }, // Nationality
+    oturumIzni: { type: Boolean }, // Residency Permit
+    seyahatKisitlamasi: { type: Boolean }, // Travel Restriction
+    notlar: { type: String }, // Notes
   },
   { timestamps: true },
-); // Adds createdAt and updatedAt fields
+);
 
-const Employee = mongoose.model("Employee", EmployeeSchema);
+const Employee =
+  mongoose.models.Employee ||
+  mongoose.model<EmployeeType>("Employee", EmployeeSchema);
 
 export default Employee;

@@ -6,7 +6,6 @@ import { fetchEmployers } from "@/lib/data";
 
 export default async function EmployersPage() {
   const data = await fetchEmployers();
-  console.log(data);
 
   return (
     <div className="my-3">
