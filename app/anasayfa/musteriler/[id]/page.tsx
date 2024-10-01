@@ -1,3 +1,4 @@
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardHeader,
@@ -6,6 +7,8 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { fetchEmployerById } from "@/lib/data";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 // params types
 type Params = {
@@ -19,6 +22,13 @@ const SingleEmployerView = async ({ params }: Params) => {
 
   return (
     <div className="p-4 md:p-8">
+      <Link
+        href="/anasayfa/musteriler"
+        className={buttonVariants({ variant: "outline" })}
+      >
+        <ArrowLeft />
+        Geri don
+      </Link>
       <Card>
         <CardHeader>
           <CardTitle>{`${employer.ad} ${employer.soyad}`}</CardTitle>

@@ -8,11 +8,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowUpDown } from "lucide-react";
 import Link from "next/link";
 
 export type EmployerType = {
@@ -40,8 +37,12 @@ export const columns: ColumnDef<EmployerType>[] = [
         className="whitespace-normal"
       >
         Ad
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
+    ),
+    cell: ({ getValue }) => (
+      <div className="whitespace-normal break-words text-center">
+        {getValue()}
+      </div>
     ),
   },
   {
@@ -53,8 +54,12 @@ export const columns: ColumnDef<EmployerType>[] = [
         className="whitespace-normal"
       >
         Soyad
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
+    ),
+    cell: ({ getValue }) => (
+      <div className="whitespace-normal break-words text-center">
+        {getValue()}
+      </div>
     ),
   },
   {
@@ -63,21 +68,17 @@ export const columns: ColumnDef<EmployerType>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal"
+        className="hidden whitespace-normal lg:table-cell"
       >
         Doğum Tarihi
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => {
       const value = getValue() as Date | string;
-
-      // Convert value to Date object and format it in Turkish locale
       const date = value instanceof Date ? value : new Date(value);
 
-      // Check if the date is valid before formatting
       return (
-        <div className="text-left">
+        <div className="hidden whitespace-normal break-words text-center lg:table-cell">
           {!isNaN(date.getTime())
             ? date.toLocaleDateString("tr-TR")
             : "Invalid Date"}
@@ -85,24 +86,32 @@ export const columns: ColumnDef<EmployerType>[] = [
       );
     },
   },
-
   {
     accessorKey: "adres",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal"
+        className="hidden whitespace-normal lg:table-cell"
       >
         Adres
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
+    ),
+    cell: ({ getValue }) => (
+      <div className="hidden whitespace-normal break-words text-center lg:table-cell">
+        {getValue()}
+      </div>
     ),
   },
   {
     accessorKey: "telefonNumarasi",
     header: () => (
       <div className="whitespace-normal text-left">Telefon Numarası</div>
+    ),
+    cell: ({ getValue }) => (
+      <div className="whitespace-normal break-words text-center">
+        {getValue()}
+      </div>
     ),
   },
   {
@@ -111,11 +120,15 @@ export const columns: ColumnDef<EmployerType>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal"
+        className="hidden whitespace-normal lg:table-cell"
       >
         Yer Tipi
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
+    ),
+    cell: ({ getValue }) => (
+      <div className="hidden whitespace-normal break-words text-center lg:table-cell">
+        {getValue()}
+      </div>
     ),
   },
   {
@@ -124,32 +137,32 @@ export const columns: ColumnDef<EmployerType>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal"
+        className="hidden whitespace-normal lg:table-cell"
       >
         Evcil Hayvan
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => (
-      <div className="text-left">{getValue() ? "Evet" : "Hayır"}</div>
+      <div className="hidden whitespace-normal break-words text-center lg:table-cell">
+        {getValue() ? "Evet" : "Hayır"}
+      </div>
     ),
   },
   {
-    accessorKey: "saglikDurumu", // Accessing the string directly
+    accessorKey: "saglikDurumu",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal"
+        className="hidden whitespace-normal lg:table-cell"
       >
         Sağlık Durumu
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => {
       const condition = getValue() as string | undefined;
       return (
-        <div className="text-left">
+        <div className="hidden whitespace-normal break-words text-center lg:table-cell">
           {condition ? condition : "Sağlık durumu yok"}
         </div>
       );
@@ -161,10 +174,9 @@ export const columns: ColumnDef<EmployerType>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal"
+        className="hidden whitespace-normal lg:table-cell"
       >
         Çocuklar
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => {
@@ -172,7 +184,7 @@ export const columns: ColumnDef<EmployerType>[] = [
         | { yas: number; sayi: number }[]
         | undefined;
       return (
-        <div className="text-left">
+        <div className="hidden whitespace-normal break-words text-center lg:table-cell">
           {Array.isArray(children) && children.length
             ? children
                 .map(
@@ -191,21 +203,28 @@ export const columns: ColumnDef<EmployerType>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal"
+        className="hidden whitespace-normal lg:table-cell"
       >
         Kilo (kg)
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => (
-      <div className="text-center">{getValue<number>()}</div>
+      <div className="hidden whitespace-normal break-words text-center lg:table-cell">
+        {getValue<number>()}
+      </div>
     ),
   },
   {
     accessorKey: "notlar",
-    header: () => <div className="whitespace-normal text-left">Notlar</div>,
+    header: () => (
+      <div className="hidden whitespace-normal text-left lg:table-cell">
+        Notlar
+      </div>
+    ),
     cell: ({ getValue }) => (
-      <div className="text-left">{getValue<string>()}</div>
+      <div className="hidden whitespace-normal break-words text-center lg:table-cell">
+        {getValue<string>()}
+      </div>
     ),
   },
   {
@@ -214,19 +233,21 @@ export const columns: ColumnDef<EmployerType>[] = [
       const employerId = row.original._id;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <Link href={`/anasayfa/musteriler/${employerId}`} passHref>
-              <DropdownMenuItem>Görüntüle</DropdownMenuItem>
-            </Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="text-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <Link href={`/anasayfa/musteriler/${employerId}`} passHref>
+                <DropdownMenuItem>Görüntüle</DropdownMenuItem>
+              </Link>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       );
     },
   },

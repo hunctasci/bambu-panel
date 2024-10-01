@@ -8,7 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowUpDown } from "lucide-react";
 import Link from "next/link";
 
 // Çalışan verileri için Zod şemasını tanımlayın
@@ -62,9 +61,14 @@ export const columns: ColumnDef<CalisanTipi>[] = [
         className="whitespace-normal break-words"
       >
         Ad
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
+    cell: ({ getValue }) => (
+      <div className="whitespace-normal text-center">{getValue()}</div>
+    ),
+    meta: {
+      className: "table-cell", // Shown on all screens
+    },
   },
   {
     accessorKey: "soyad",
@@ -75,9 +79,14 @@ export const columns: ColumnDef<CalisanTipi>[] = [
         className="whitespace-normal break-words"
       >
         Soyad
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
+    cell: ({ getValue }) => (
+      <div className="whitespace-normal text-center">{getValue()}</div>
+    ),
+    meta: {
+      className: "table-cell", // Shown on all screens
+    },
   },
   {
     accessorKey: "dogumTarihi",
@@ -85,19 +94,20 @@ export const columns: ColumnDef<CalisanTipi>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal break-words"
+        className="hidden whitespace-normal lg:table-cell"
       >
         Doğum Tarihi
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => {
       const value = getValue() as Date | string;
+      const date = value instanceof Date ? value : new Date(value);
+
       return (
-        <div className="text-left">
-          {value instanceof Date
-            ? value.toLocaleDateString()
-            : new Date(value).toLocaleDateString()}
+        <div className="hidden whitespace-normal break-words text-center lg:table-cell">
+          {!isNaN(date.getTime())
+            ? date.toLocaleDateString("tr-TR")
+            : "Invalid Date"}
         </div>
       );
     },
@@ -108,16 +118,15 @@ export const columns: ColumnDef<CalisanTipi>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal break-words"
+        className="hidden whitespace-normal break-words lg:table-cell"
       >
         Yeterlilik
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => {
       const yeterlilikler = getValue<string[]>();
       return (
-        <div className="text-left">
+        <div className="hidden whitespace-normal text-left lg:table-cell">
           {yeterlilikler.map((value) => getCompetencyLabel(value)).join(", ")}
         </div>
       );
@@ -129,11 +138,13 @@ export const columns: ColumnDef<CalisanTipi>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal break-words"
+        className="hidden whitespace-normal break-words lg:table-cell"
       >
         Adres
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
+    ),
+    cell: ({ getValue }) => (
+      <div className="hidden whitespace-normal lg:table-cell">{getValue()}</div>
     ),
   },
   {
@@ -141,6 +152,12 @@ export const columns: ColumnDef<CalisanTipi>[] = [
     header: () => (
       <div className="whitespace-normal break-words text-left">Telefon</div>
     ),
+    cell: ({ getValue }) => (
+      <div className="whitespace-normal text-center">{getValue()}</div>
+    ),
+    meta: {
+      className: "table-cell", // Shown on all screens
+    },
   },
   {
     accessorKey: "medeniDurum",
@@ -148,11 +165,13 @@ export const columns: ColumnDef<CalisanTipi>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal break-words"
+        className="hidden whitespace-normal break-words lg:table-cell"
       >
         Medeni Durum
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
+    ),
+    cell: ({ getValue }) => (
+      <div className="hidden whitespace-normal lg:table-cell">{getValue()}</div>
     ),
   },
   {
@@ -161,14 +180,15 @@ export const columns: ColumnDef<CalisanTipi>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal break-words"
+        className="hidden whitespace-normal break-words lg:table-cell"
       >
         Çocuk Varmı
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => (
-      <div className="text-left">{getValue() ? "Evet" : "Hayır"}</div>
+      <div className="hidden whitespace-normal text-left lg:table-cell">
+        {getValue() ? "Evet" : "Hayır"}
+      </div>
     ),
   },
   {
@@ -177,14 +197,15 @@ export const columns: ColumnDef<CalisanTipi>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal break-words"
+        className="hidden whitespace-normal break-words lg:table-cell"
       >
         Evcil Hayvan
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => (
-      <div className="text-left">{getValue() ? "Evet" : "Hayır"}</div>
+      <div className="hidden whitespace-normal text-left lg:table-cell">
+        {getValue() ? "Evet" : "Hayır"}
+      </div>
     ),
   },
   {
@@ -193,11 +214,13 @@ export const columns: ColumnDef<CalisanTipi>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal break-words"
+        className="hidden whitespace-normal break-words lg:table-cell"
       >
         Uyruk
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
+    ),
+    cell: ({ getValue }) => (
+      <div className="hidden whitespace-normal lg:table-cell">{getValue()}</div>
     ),
   },
   {
@@ -206,14 +229,15 @@ export const columns: ColumnDef<CalisanTipi>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal break-words"
+        className="hidden whitespace-normal break-words lg:table-cell"
       >
         İkamet İzin
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => (
-      <div className="text-left">{getValue() ? "Evet" : "Hayır"}</div>
+      <div className="hidden whitespace-normal text-left lg:table-cell">
+        {getValue() ? "Evet" : "Hayır"}
+      </div>
     ),
   },
   {
@@ -222,14 +246,15 @@ export const columns: ColumnDef<CalisanTipi>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="whitespace-normal break-words"
+        className="hidden whitespace-normal break-words lg:table-cell"
       >
         Seyahat Kısıtlaması
-        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ getValue }) => (
-      <div className="text-left">{getValue() ? "Evet" : "Hayır"}</div>
+      <div className="hidden whitespace-normal text-left lg:table-cell">
+        {getValue() ? "Evet" : "Hayır"}
+      </div>
     ),
   },
   {
@@ -252,6 +277,9 @@ export const columns: ColumnDef<CalisanTipi>[] = [
           </DropdownMenuContent>
         </DropdownMenu>
       );
+    },
+    meta: {
+      className: "table-cell", // Shown on all screens
     },
   },
 ];
