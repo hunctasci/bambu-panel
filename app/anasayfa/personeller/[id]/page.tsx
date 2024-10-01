@@ -14,8 +14,27 @@ type Params = {
   };
 };
 
+const competencyOptions = [
+  { value: "evIsiElemanlari", label: "Ev İşi Elemanları" },
+  { value: "hastaBakimi", label: "Hasta Bakımı" },
+  { value: "yasliBakimi", label: "Yaşlı Bakımı" },
+  { value: "bebekBakimi", label: "Bebek Bakımı" },
+  { value: "yatalakBakan", label: "Yatalak Hasta Bakımı" },
+  { value: "alzheimerBakan", label: "Alzheimer Hasta Bakımı" },
+  { value: "dadiYeniDogan", label: "Dadı (Yeni Doğan)" },
+  { value: "cocukBakimi", label: "Çocuk Bakımı" },
+  { value: "asci", label: "Aşçı" },
+  { value: "sofor", label: "Şoför" },
+  { value: "oyunAblasi", label: "Oyun Ablası" },
+];
+
 const SingleEmployeeView = async ({ params }: Params) => {
   const employee = await fetchEmployeeById(params.id);
+
+  const getCompetencyLabel = (value: string): string => {
+    const option = competencyOptions.find((opt) => opt.value === value);
+    return option ? option.label : value;
+  };
 
   return (
     <div className="p-4 md:p-8">
@@ -46,8 +65,8 @@ const SingleEmployeeView = async ({ params }: Params) => {
               <strong>Medeni Durum:</strong> {employee.medeniDurum}
             </div>
             <div>
-              <strong>Yeterlilikler:</strong>{" "}
-              {employee.yeterlilik.map((item) => item).join(", ")}
+              <strong>Yeterlilikler:</strong>
+              {employee.yeterlilik.map(getCompetencyLabel).join(", ")}
             </div>
             <div>
               <strong>Evcil Hayvanla Çalışır:</strong>{" "}

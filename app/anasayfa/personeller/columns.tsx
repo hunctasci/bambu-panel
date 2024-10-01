@@ -13,7 +13,7 @@ import Link from "next/link";
 
 // Çalışan verileri için Zod şemasını tanımlayın
 export type CalisanTipi = {
-  id: string;
+  _id: string;
   ad: string;
   soyad: string;
   dogumTarihi: Date;
@@ -26,10 +26,30 @@ export type CalisanTipi = {
   referanslar?: string; // Opsiyonel alan
   evcilHayvan?: boolean; // Opsiyonel alan
   hayvanlardanKorkma?: boolean; // Opsiyonel alan
-  vatandaslik?: string; // Opsiyonel alan
+  uyruk?: string; // Opsiyonel alan
   ikametIzin?: boolean; // Opsiyonel alan
   seyahatKisitlamasi?: boolean; // Opsiyonel alan
   notlar?: string; // Opsiyonel alan
+};
+
+const competencyOptions = [
+  { value: "evIsiElemanlari", label: "Ev İşi Elemanları" },
+  { value: "hastaBakimi", label: "Hasta Bakımı" },
+  { value: "yasliBakimi", label: "Yaşlı Bakımı" },
+  { value: "bebekBakimi", label: "Bebek Bakımı" },
+  { value: "yatalakBakan", label: "Yatalak Hasta Bakımı" },
+  { value: "alzheimerBakan", label: "Alzheimer Hasta Bakımı" },
+  { value: "dadiYeniDogan", label: "Dadı (Yeni Doğan)" },
+  { value: "cocukBakimi", label: "Çocuk Bakımı" },
+  { value: "asci", label: "Aşçı" },
+  { value: "sofor", label: "Şoför" },
+  { value: "oyunAblasi", label: "Oyun Ablası" },
+];
+
+const getCompetencyLabel = (value: string): string => {
+  const option = competencyOptions.find((opt) => opt.value === value);
+
+  return option ? option.label : value;
 };
 
 export const columns: ColumnDef<CalisanTipi>[] = [
@@ -96,7 +116,11 @@ export const columns: ColumnDef<CalisanTipi>[] = [
     ),
     cell: ({ getValue }) => {
       const yeterlilikler = getValue<string[]>();
-      return <div className="text-left">{yeterlilikler.join(", ")}</div>;
+      return (
+        <div className="text-left">
+          {yeterlilikler.map((value) => getCompetencyLabel(value)).join(", ")}
+        </div>
+      );
     },
   },
   {
@@ -164,14 +188,14 @@ export const columns: ColumnDef<CalisanTipi>[] = [
     ),
   },
   {
-    accessorKey: "vatandaslik",
+    accessorKey: "uyruk",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         className="whitespace-normal break-words"
       >
-        Vatandaşlık
+        Uyruk
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
