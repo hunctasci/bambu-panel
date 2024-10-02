@@ -53,6 +53,36 @@ export const addEmployer = async (formData: FormData) => {
   }
 };
 
+export const deleteEmployer = async (formData: FormData) => {
+  const employerId = formData.get("employerId") as string;
+
+  try {
+    // Connect to the database
+    await connectToDB();
+
+    // Find and delete the employer by ID
+    const deletedEmployer = await Employer.findByIdAndDelete(employerId);
+
+    if (!deletedEmployer) {
+      throw new Error("Employer not found");
+    }
+
+    console.log("Employer deleted successfully:", deletedEmployer);
+
+    // Revalidate and redirect
+    revalidatePath("/anasayfa/musteriler");
+    redirect("/anasayfa/musteriler");
+  } catch (err) {
+    console.error("Error deleting employer:", err);
+
+    if (err instanceof Error && err.message.startsWith("NEXT_REDIRECT")) {
+      throw err;
+    } else {
+      throw new Error("Failed to delete employer!");
+    }
+  }
+};
+
 export const addEmployee = async (formData: FormData) => {
   try {
     // Connect to the database
@@ -118,6 +148,57 @@ export const addEmployee = async (formData: FormData) => {
       throw err;
     } else {
       throw new Error("Failed to create employee!");
+    }
+  }
+};
+
+export const deleteEmployee = async (formData: FormData) => {
+  try {
+    // Extract employeeId from FormData
+    const employeeId = formData.get("employeeId") as string;
+
+    // Connect to the database
+    await connectToDB();
+
+    // Proceed as before...
+    // Find the employee by ID
+    const employee = await Employee.findById(employeeId);
+
+    if (!employee) {
+      throw new Error("Employee not found");
+    }
+
+    // If the employee has a photo, delete it from the filesystem
+    if (employee.fotograf) {
+      const absolutePath = path.join(
+        process.cwd(),
+        "public",
+        employee.fotograf,
+      );
+      try {
+        await fs.unlink(absolutePath);
+        console.log("Employee photo deleted:", absolutePath);
+      } catch (fileErr) {
+        console.error("Error deleting employee photo:", fileErr);
+        // Optionally handle file deletion error
+      }
+    }
+
+    // Delete the employee from the database
+    await Employee.findByIdAndDelete(employeeId);
+
+    console.log("Employee deleted successfully:", employee);
+
+    // Revalidate and redirect
+    revalidatePath("/anasayfa/personeller");
+    redirect("/anasayfa/personeller");
+  } catch (err) {
+    console.error("Error deleting employee:", err);
+
+    if (err instanceof Error && err.message.startsWith("NEXT_REDIRECT")) {
+      throw err;
+    } else {
+      throw new Error("Failed to delete employee!");
     }
   }
 };

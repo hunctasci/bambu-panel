@@ -69,7 +69,6 @@ export default function Navbar() {
       </div>
       <div className="font-bold capitalize">{pathname.split("/").pop()}</div>
       <div className="flex gap-3">
-        <Input placeholder="Arama" />
         <ModeToggle />
       </div>
     </div>

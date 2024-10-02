@@ -75,13 +75,17 @@ const employeeFormSchema = z.object({
   notlar: z.string().optional(),
   fotograf: z
     .any()
-    .refine((files) => files?.length > 0, "Fotoğraf yüklemeniz gerekiyor.")
+    .optional() // Fotografin optional olduğuna dikkat edin
     .refine(
-      (files) => files[0]?.size <= MAX_FILE_SIZE,
+      (files) =>
+        !files || files.length === 0 || files[0]?.size <= MAX_FILE_SIZE,
       `Maksimum dosya boyutu 5MB.`,
     )
     .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files[0]?.type),
+      (files) =>
+        !files ||
+        files.length === 0 ||
+        ACCEPTED_IMAGE_TYPES.includes(files[0]?.type),
       "Sadece .jpg, .jpeg, .png ve .webp formatları kabul edilir.",
     ),
 });
@@ -411,16 +415,14 @@ export default function EmployeeForm() {
           name="fotograf"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Fotoğraf</FormLabel>
+              <FormLabel>Fotoğraf (Opsiyonel)</FormLabel>
               <FormControl>
                 <Input
                   type="file"
                   accept={ACCEPTED_IMAGE_TYPES.join(",")}
                   onChange={(e) => {
                     const file = e.target.files?.[0];
-                    if (file) {
-                      field.onChange(e.target.files);
-                    }
+                    field.onChange(file ? e.target.files : undefined); // Handle optional field
                   }}
                 />
               </FormControl>

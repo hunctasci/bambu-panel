@@ -46,34 +46,34 @@ export function DataTable<TData, TValue>({
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
+  const [globalFilter, setGlobalFilter] = React.useState("");
 
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
     state: {
       sorting,
-      columnFilters,
       columnVisibility,
+      globalFilter,
     },
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onSortingChange: setSorting,
+    onColumnVisibilityChange: setColumnVisibility,
   });
+
   // console.log(data);
   return (
     <div>
       <div className="flex items-center justify-center">
         <div className="flex items-center py-4">
           <Input
-            placeholder="Filter names..."
-            value={(table.getColumn("ad")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("ad")?.setFilterValue(event.target.value)
-            }
+            placeholder="Search..."
+            value={globalFilter ?? ""}
+            onChange={(event) => setGlobalFilter(event.target.value)}
             className="max-w-sm"
           />
         </div>

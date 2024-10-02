@@ -3,15 +3,16 @@ import localFont from "next/font/local";
 import "@/app/ui/globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+// Update these to your new font files with Turkish support
+const robotoRegular = localFont({
+  src: "./fonts/Roboto-Regular.woff2",
+  variable: "--font-roboto-regular",
+  weight: "400",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const robotoBold = localFont({
+  src: "./fonts/Roboto-Bold.woff2",
+  variable: "--font-roboto-bold",
+  weight: "700",
 });
 
 export const metadata: Metadata = {
@@ -27,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${robotoRegular.variable} ${robotoBold.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"

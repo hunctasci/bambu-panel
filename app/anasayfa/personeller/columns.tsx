@@ -51,7 +51,7 @@ const getCompetencyLabel = (value: string): string => {
   return option ? option.label : value;
 };
 
-export const columns: ColumnDef<CalisanTipi>[] = [
+export const columns: ColumnDef<EmployeeType>[] = [
   {
     accessorKey: "ad",
     header: ({ column }) => (
@@ -66,9 +66,6 @@ export const columns: ColumnDef<CalisanTipi>[] = [
     cell: ({ getValue }) => (
       <div className="whitespace-normal text-center">{getValue()}</div>
     ),
-    meta: {
-      className: "table-cell", // Shown on all screens
-    },
   },
   {
     accessorKey: "soyad",
@@ -84,12 +81,13 @@ export const columns: ColumnDef<CalisanTipi>[] = [
     cell: ({ getValue }) => (
       <div className="whitespace-normal text-center">{getValue()}</div>
     ),
-    meta: {
-      className: "table-cell", // Shown on all screens
-    },
   },
   {
     accessorKey: "dogumTarihi",
+    accessorFn: (row) =>
+      row.dogumTarihi
+        ? new Date(row.dogumTarihi).toLocaleDateString("tr-TR")
+        : "",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -99,21 +97,15 @@ export const columns: ColumnDef<CalisanTipi>[] = [
         Doğum Tarihi
       </Button>
     ),
-    cell: ({ getValue }) => {
-      const value = getValue() as Date | string;
-      const date = value instanceof Date ? value : new Date(value);
-
-      return (
-        <div className="hidden whitespace-normal break-words text-center lg:table-cell">
-          {!isNaN(date.getTime())
-            ? date.toLocaleDateString("tr-TR")
-            : "Invalid Date"}
-        </div>
-      );
-    },
+    cell: ({ getValue }) => (
+      <div className="hidden whitespace-normal break-words text-center lg:table-cell">
+        {getValue()}
+      </div>
+    ),
   },
   {
     accessorKey: "yeterlilik",
+    accessorFn: (row) => row.yeterlilik.map(getCompetencyLabel).join(", "),
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -123,14 +115,11 @@ export const columns: ColumnDef<CalisanTipi>[] = [
         Yeterlilik
       </Button>
     ),
-    cell: ({ getValue }) => {
-      const yeterlilikler = getValue<string[]>();
-      return (
-        <div className="hidden whitespace-normal text-left lg:table-cell">
-          {yeterlilikler.map((value) => getCompetencyLabel(value)).join(", ")}
-        </div>
-      );
-    },
+    cell: ({ getValue }) => (
+      <div className="hidden whitespace-normal text-left lg:table-cell">
+        {getValue()}
+      </div>
+    ),
   },
   {
     accessorKey: "adres",
@@ -155,9 +144,6 @@ export const columns: ColumnDef<CalisanTipi>[] = [
     cell: ({ getValue }) => (
       <div className="whitespace-normal text-center">{getValue()}</div>
     ),
-    meta: {
-      className: "table-cell", // Shown on all screens
-    },
   },
   {
     accessorKey: "medeniDurum",
@@ -175,24 +161,26 @@ export const columns: ColumnDef<CalisanTipi>[] = [
     ),
   },
   {
-    accessorKey: "cocukVarmi",
+    accessorKey: "cocukSahibi",
+    accessorFn: (row) => (row.cocukSahibi ? "Evet" : "Hayır"),
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         className="hidden whitespace-normal break-words lg:table-cell"
       >
-        Çocuk Varmı
+        Çocuk Sahibi
       </Button>
     ),
     cell: ({ getValue }) => (
       <div className="hidden whitespace-normal text-left lg:table-cell">
-        {getValue() ? "Evet" : "Hayır"}
+        {getValue()}
       </div>
     ),
   },
   {
     accessorKey: "evcilHayvan",
+    accessorFn: (row) => (row.evcilHayvan ? "Evet" : "Hayır"),
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -204,7 +192,7 @@ export const columns: ColumnDef<CalisanTipi>[] = [
     ),
     cell: ({ getValue }) => (
       <div className="hidden whitespace-normal text-left lg:table-cell">
-        {getValue() ? "Evet" : "Hayır"}
+        {getValue()}
       </div>
     ),
   },
@@ -224,24 +212,26 @@ export const columns: ColumnDef<CalisanTipi>[] = [
     ),
   },
   {
-    accessorKey: "ikametIzin",
+    accessorKey: "oturumIzni",
+    accessorFn: (row) => (row.oturumIzni ? "Var" : "Yok"),
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         className="hidden whitespace-normal break-words lg:table-cell"
       >
-        İkamet İzin
+        Oturum İzni
       </Button>
     ),
     cell: ({ getValue }) => (
       <div className="hidden whitespace-normal text-left lg:table-cell">
-        {getValue() ? "Evet" : "Hayır"}
+        {getValue()}
       </div>
     ),
   },
   {
     accessorKey: "seyahatKisitlamasi",
+    accessorFn: (row) => (row.seyahatKisitlamasi ? "Var" : "Yok"),
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -253,7 +243,7 @@ export const columns: ColumnDef<CalisanTipi>[] = [
     ),
     cell: ({ getValue }) => (
       <div className="hidden whitespace-normal text-left lg:table-cell">
-        {getValue() ? "Evet" : "Hayır"}
+        {getValue()}
       </div>
     ),
   },
@@ -272,14 +262,13 @@ export const columns: ColumnDef<CalisanTipi>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <Link href={`/anasayfa/personeller/${employeeId}`} passHref>
-              <DropdownMenuItem>Görüntüle</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a>Görüntüle</a>
+              </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>
         </DropdownMenu>
       );
-    },
-    meta: {
-      className: "table-cell", // Shown on all screens
     },
   },
 ];

@@ -7,11 +7,12 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { fetchEmployeeById } from "@/lib/data"; // Assuming you've defined this
+import { deleteEmployee } from "@/lib/actions"; // Import the delete action
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import EmployeeActions from "@/components/EmployeeActions"; // Import the client component
 
-// params types
 type Params = {
   params: {
     id: string;
@@ -34,11 +35,6 @@ const competencyOptions = [
 
 const SingleEmployeeView = async ({ params }: Params) => {
   const employee = await fetchEmployeeById(params.id);
-
-  const getCompetencyLabel = (value: string): string => {
-    const option = competencyOptions.find((opt) => opt.value === value);
-    return option ? option.label : value;
-  };
 
   return (
     <div className="p-4 md:p-8">
@@ -86,7 +82,14 @@ const SingleEmployeeView = async ({ params }: Params) => {
             </div>
             <div>
               <strong>Yeterlilikler:</strong>
-              {employee.yeterlilik.map(getCompetencyLabel).join(", ")}
+              {employee.yeterlilik
+                .map((value) => {
+                  const option = competencyOptions.find(
+                    (opt) => opt.value === value,
+                  );
+                  return option ? option.label : value;
+                })
+                .join(", ")}
             </div>
             <div>
               <strong>Evcil Hayvanla Çalışır:</strong>{" "}
@@ -119,6 +122,13 @@ const SingleEmployeeView = async ({ params }: Params) => {
             <div>
               <strong>Notlar:</strong> {employee.notlar}
             </div>
+
+            {/* Client component for actions like PDF generation and deleting the employee */}
+            <EmployeeActions
+              employee={employee}
+              competencyOptions={competencyOptions}
+              deleteEmployee={deleteEmployee} // Pass the delete action
+            />
           </div>
         </CardContent>
       </Card>

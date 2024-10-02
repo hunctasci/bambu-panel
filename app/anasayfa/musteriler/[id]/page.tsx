@@ -1,4 +1,4 @@
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardHeader,
@@ -6,9 +6,11 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { deleteEmployer } from "@/lib/actions";
 import { fetchEmployerById } from "@/lib/data";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import EmployerActions from "@/components/EmployerActions"; // Import EmployerActions
 
 // params types
 type Params = {
@@ -71,6 +73,12 @@ const SingleEmployerView = async ({ params }: Params) => {
             <div>
               <strong>Notlar:</strong> {employer.notlar}
             </div>
+
+            {/* Client component for actions like PDF generation and deleting the employer */}
+            <EmployerActions
+              employer={employer}
+              deleteEmployer={deleteEmployer} // Pass the delete action
+            />
           </div>
         </CardContent>
       </Card>
