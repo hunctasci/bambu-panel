@@ -20,6 +20,8 @@ services:
         - path: .
           target: /app
           action: sync
+    volumes:
+      - uploads:/app/public/uploads
 
   db:
     image: mongo
@@ -30,3 +32,4 @@ services:
 
 volumes:
   database:
+  uploads:

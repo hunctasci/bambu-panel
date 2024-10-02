@@ -38,6 +38,7 @@ export interface EmployeeType extends Document {
   oturumIzni?: boolean; // Residency Permit
   seyahatKisitlamasi?: boolean; // Travel Restriction
   notlar?: string; // Notes
+  fotograf?: string; //
 }
 
 const EmployeeSchema = new Schema<EmployeeType>(
@@ -61,6 +62,7 @@ const EmployeeSchema = new Schema<EmployeeType>(
     oturumIzni: { type: Boolean },
     seyahatKisitlamasi: { type: Boolean },
     notlar: { type: String },
+    fotograf: { type: String },
   },
   { timestamps: true },
 );

@@ -19,16 +19,13 @@ import {
 } from "react-icons/md";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function Sidebar() {
   return (
     <div className="flex h-[100vh] flex-col items-center justify-between rounded-xl border p-7">
       <div className="space-y-5">
         <div className="flex flex-col items-center justify-center space-y-3">
-          <Avatar className="h-20 w-20">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>BD</AvatarFallback>
-          </Avatar>
           <div className="flex flex-col items-center justify-center">
             <span className="text-lg capitalize">Bambu Danismanlik</span>
             <span className="text-xs font-bold">Yonetim Paneli</span>

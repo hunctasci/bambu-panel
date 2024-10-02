@@ -4,6 +4,9 @@ import { connectToDB } from "./utils";
 import Employer from "@/app/models/employer";
 import { redirect } from "next/navigation";
 import Employee from "@/app/models/employee";
+import path from "path";
+import fs from "fs/promises";
+import { v4 as uuidv4 } from "uuid";
 
 export const addEmployer = async (formData: FormData) => {
   try {
@@ -58,23 +61,46 @@ export const addEmployee = async (formData: FormData) => {
     // Extract and process form data
     const data = Object.fromEntries(formData.entries());
 
-    // Process boolean values and multiple selections
+    // Handle file upload
+    let fotografPath = "";
+    const file = formData.get("fotograf") as File;
+    if (file && file.name) {
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      // Create a unique filename
+      const filename = `${uuidv4()}_${file.name}`;
+      const relativePath = `/uploads/${filename}`;
+      const absolutePath = path.join(process.cwd(), "public", relativePath);
+
+      // Ensure the uploads directory exists
+      await fs.mkdir(path.dirname(absolutePath), { recursive: true });
+
+      // Write the file
+      await fs.writeFile(absolutePath, buffer);
+      fotografPath = `${relativePath}`;
+
+      console.log("File saved at:", absolutePath);
+    }
+
+    // Create a new employee document
     const newEmployee = new Employee({
       ad: data.ad,
       soyad: data.soyad,
-      dogumTarihi: new Date(data.dogumTarihi as string), // Ensure date is correctly parsed
-      yeterlilik: formData.getAll("yeterlilik"), // Get all selected competencies
+      dogumTarihi: new Date(data.dogumTarihi as string),
+      yeterlilik: formData.getAll("yeterlilik"),
       adres: data.adres,
       telefonNumarasi: data.telefonNumarasi,
       medeniDurum: data.medeniDurum,
-      cocukSahibi: data.cocukSahibi === "on", // Handle boolean checkbox for 'cocukSahibi'
+      cocukSahibi: data.cocukSahibi === "on",
       oncekiIsverenler: data.oncekiIsverenler,
       referanslar: data.referanslar,
-      evcilHayvan: data.evcilHayvan === "on", // Handle boolean checkbox for 'evcilHayvan'
+      evcilHayvan: data.evcilHayvan === "on",
       uyruk: data.uyruk,
-      oturumIzni: data.oturumIzni === "on", // Handle boolean checkbox for 'oturumIzni'
-      seyahatKisitlamasi: data.seyahatKisitlamasi === "on", // Handle boolean checkbox for 'seyahatKisitlamasi'
+      oturumIzni: data.oturumIzni === "on",
+      seyahatKisitlamasi: data.seyahatKisitlamasi === "on",
       notlar: data.notlar,
+      fotograf: fotografPath, // Add the photo path to the employee document
     });
 
     // Save the new employee document to the database
@@ -88,12 +114,9 @@ export const addEmployee = async (formData: FormData) => {
   } catch (err) {
     console.error("Error creating employee:", err);
 
-    // Check if the error is a redirect
     if (err instanceof Error && err.message.startsWith("NEXT_REDIRECT")) {
-      // This is not an error, but an expected redirect. Re-throw it.
       throw err;
     } else {
-      // This is an actual error
       throw new Error("Failed to create employee!");
     }
   }

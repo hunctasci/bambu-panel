@@ -39,6 +39,14 @@ const competencies = [
   { value: "oyunAblasi", label: "Oyun Ablası" },
 ] as const;
 
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
 const employeeFormSchema = z.object({
   ad: z.string().min(2, { message: "Ad en az 2 karakter olmalı." }),
   soyad: z.string().min(2, { message: "Soyad en az 2 karakter olmalı." }),
@@ -65,6 +73,17 @@ const employeeFormSchema = z.object({
   oturumIzni: z.boolean(),
   seyahatKisitlamasi: z.boolean(),
   notlar: z.string().optional(),
+  fotograf: z
+    .any()
+    .refine((files) => files?.length > 0, "Fotoğraf yüklemeniz gerekiyor.")
+    .refine(
+      (files) => files[0]?.size <= MAX_FILE_SIZE,
+      `Maksimum dosya boyutu 5MB.`,
+    )
+    .refine(
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files[0]?.type),
+      "Sadece .jpg, .jpeg, .png ve .webp formatları kabul edilir.",
+    ),
 });
 
 // Infer the schema type
@@ -89,6 +108,7 @@ export default function EmployeeForm() {
       oturumIzni: false,
       seyahatKisitlamasi: false,
       notlar: "",
+      fotograf: undefined,
     },
   });
 
@@ -101,6 +121,8 @@ export default function EmployeeForm() {
           formData.append(key, `${year}-${month}-${day}`);
         } else if (Array.isArray(value)) {
           value.forEach((item) => formData.append(key, item));
+        } else if (key === "fotograf" && value instanceof FileList) {
+          formData.append(key, value[0]);
         } else {
           formData.append(key, value.toString());
         }
@@ -378,6 +400,29 @@ export default function EmployeeForm() {
               <FormLabel>Notlar</FormLabel>
               <FormControl>
                 <Input placeholder="Ek notlar" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="fotograf"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Fotoğraf</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept={ACCEPTED_IMAGE_TYPES.join(",")}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      field.onChange(e.target.files);
+                    }
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

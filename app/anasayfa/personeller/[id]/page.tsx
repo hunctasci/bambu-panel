@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { fetchEmployeeById } from "@/lib/data"; // Assuming you've defined this
 import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 // params types
@@ -56,6 +57,14 @@ const SingleEmployeeView = async ({ params }: Params) => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <Image
+                src={`${employee.fotograf}`}
+                alt="Employee"
+                width={100}
+                height={100}
+              />
+            </div>
             <div>
               <strong>Ad:</strong> {employee.ad}
             </div>

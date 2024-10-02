@@ -17,9 +17,6 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle>Personeller</CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-xl">259</p>
-          </CardContent>
           <CardFooter className="flex flex-col gap-y-3">
             <Button
               asChild
@@ -41,9 +38,6 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle>Musteriler</CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-xl">259</p>
-          </CardContent>
           <CardFooter className="flex flex-col gap-y-3">
             <Button
               asChild
