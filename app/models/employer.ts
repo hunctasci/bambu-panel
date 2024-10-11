@@ -1,36 +1,23 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema } from "mongoose";
+import { EmployerType } from "@/lib/types";
 
-export interface EmployerType extends Document {
-  ad: string; // Name
-  soyad: string; // Surname
-  dogumTarihi: Date; // Date of Birth
-  adres: string; // Address
-  telefonNumarasi: string; // Telephone Number
-  yerTipi: "Müstakil" | "Dublex" | "Normal Daire"; // Place Type
-  evcilHayvan: boolean; // Has Pets
-  saglikDurumu: string; // Health Condition
-  cocuklar: string; // Children
-  kilo: number; // Weight
-  notlar: string; // Notes
-}
-
-const EmployerSchema = new Schema(
+const EmployerSchema = new Schema<EmployerType>(
   {
-    ad: { type: String, required: true }, // Name
-    soyad: { type: String, required: true }, // Surname
-    dogumTarihi: { type: Date, required: true }, // Date of Birth
-    adres: { type: String, required: true }, // Address
-    telefonNumarasi: { type: String, required: true }, // Telephone Number
-    yerTipi: {
+    firstName: { type: String, required: true }, // ad
+    lastName: { type: String, required: true }, // soyad
+    birthDate: { type: Date, required: true }, // dogumTarihi
+    address: { type: String, required: true }, // adres
+    phoneNumber: { type: String, required: true }, // telefonNumarasi
+    placeType: {
       type: String,
-      enum: ["Müstakil", "Dublex", "Normal Daire"], // Place Type
+      enum: ["Müstakil", "Dublex", "Normal Daire"], // yerTipi
       required: true,
     },
-    evcilHayvan: { type: Boolean, default: false }, // Has Pets
-    saglikDurumu: { type: String }, // Health Condition
-    cocuklar: { type: String }, // Children
-    kilo: { type: Number }, // Weight
-    notlar: { type: String }, // Notes
+    hasPets: { type: Boolean, default: false }, // evcilHayvan
+    healthCondition: { type: String }, // saglikDurumu
+    children: { type: String }, // cocuklar
+    weight: { type: Number }, // kilo
+    notes: { type: String }, // notlar
   },
   { timestamps: true },
 );

@@ -18,17 +18,17 @@ export const addEmployer = async (formData: FormData) => {
 
     // Create a new employer document with the provided form data
     const newEmployer = new Employer({
-      ad: data.ad,
-      soyad: data.soyad,
-      dogumTarihi: new Date(data.dogumTarihi as string),
-      adres: data.adres,
-      telefonNumarasi: data.telefonNumarasi,
-      yerTipi: data.yerTipi,
-      evcilHayvan: data.evcilHayvan === "true",
-      saglikDurumu: data.saglikDurumu,
-      cocuklar: data.cocuklar,
-      kilo: data.kilo ? parseFloat(data.kilo as string) : undefined,
-      notlar: data.notlar,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      birthDate: new Date(data.birthDate as string),
+      address: data.address,
+      phoneNumber: data.phoneNumber,
+      placeType: data.placeType,
+      hasPets: data.hasPets === "true",
+      healthCondition: data.healthCondition,
+      hasChildren: data.hasChildren,
+      weight: data.weight ? parseFloat(data.weight as string) : undefined,
+      notes: data.notes,
     });
 
     // Save the new employer document to the database
@@ -37,8 +37,6 @@ export const addEmployer = async (formData: FormData) => {
     console.log("Employer created successfully:", newEmployer);
 
     // Revalidate and redirect
-    revalidatePath("/anasayfa/musteriler");
-    redirect("/anasayfa/musteriler");
   } catch (err) {
     console.error("Error creating employer:", err);
 
@@ -51,7 +49,43 @@ export const addEmployer = async (formData: FormData) => {
       throw new Error("Failed to create employer!");
     }
   }
+  revalidatePath("/dashboard/employers");
+  redirect("/dashboard/employers");
 };
+
+export async function updateEmployer(formData: FormData) {
+  console.log("updateEmployer function called");
+  console.log("Received formData:", Object.fromEntries(formData));
+
+  const id = formData.get("id") as string;
+  console.log("Employer ID:", id);
+
+  // Convert FormData to a plain object
+  const data = Object.fromEntries(formData.entries());
+
+  // Remove the id from the data object
+  delete data.id;
+
+  console.log("Data to update:", data);
+
+  try {
+    const updatedEmployer = await Employer.findByIdAndUpdate(id, data, {
+      new: true,
+    });
+
+    if (!updatedEmployer) {
+      throw new Error("Employer not found");
+    }
+
+    console.log("Update successful:", updatedEmployer);
+  } catch (error) {
+    console.error("Failed to update employer:", error);
+    // Instead of console.log, throw an error to be caught by the client
+    throw new Error("Failed to update employer");
+  }
+  revalidatePath("/dashboard/employers");
+  redirect("/dashboard/employers");
+}
 
 export const deleteEmployer = async (formData: FormData) => {
   const employerId = formData.get("employerId") as string;
@@ -68,10 +102,6 @@ export const deleteEmployer = async (formData: FormData) => {
     }
 
     console.log("Employer deleted successfully:", deletedEmployer);
-
-    // Revalidate and redirect
-    revalidatePath("/anasayfa/musteriler");
-    redirect("/anasayfa/musteriler");
   } catch (err) {
     console.error("Error deleting employer:", err);
 
@@ -81,100 +111,133 @@ export const deleteEmployer = async (formData: FormData) => {
       throw new Error("Failed to delete employer!");
     }
   }
+  // Revalidate and redirect
+  revalidatePath("/dashboard/employers");
+  redirect("/dashboard/employers");
 };
 
 export const addEmployee = async (formData: FormData) => {
+  await connectToDB();
   try {
     // Connect to the database
-    await connectToDB();
+    console.log("Connecting to DB...");
+    console.log("Connected to DB");
 
     // Extract and process form data
     const data = Object.fromEntries(formData.entries());
+    console.log("Form data extracted:", data);
 
-    // Handle file upload
-    let fotografPath = "";
-    const file = formData.get("fotograf") as File;
+    const file = formData.get("photo") as File;
+    let photoPath = null;
+
     if (file && file.name) {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
+      console.log("File found:", file.name);
+      const fileBuffer = await file.arrayBuffer();
+      console.log("File buffer created");
 
       // Create a unique filename
-      const filename = `${uuidv4()}_${file.name}`;
-      const relativePath = `/uploads/${filename}`;
+      const uniqueFilename = `${uuidv4()}_${file.name}`;
+      console.log(uniqueFilename);
+      const relativePath = `/uploads/${uniqueFilename}`;
+      console.log(relativePath);
       const absolutePath = path.join(process.cwd(), "public", relativePath);
+      console.log("absolutePath", absolutePath);
 
       // Ensure the uploads directory exists
       await fs.mkdir(path.dirname(absolutePath), { recursive: true });
+      console.log("Directory created or already exists");
 
       // Write the file
-      await fs.writeFile(absolutePath, buffer);
-      fotografPath = `${relativePath}`;
-
+      await fs.appendFile(absolutePath, Buffer.from(fileBuffer));
       console.log("File saved at:", absolutePath);
+
+      photoPath = relativePath;
+    } else {
+      console.log("No photo file found, skipping upload process");
     }
 
     // Create a new employee document
     const newEmployee = new Employee({
-      ad: data.ad,
-      soyad: data.soyad,
-      dogumTarihi: new Date(data.dogumTarihi as string),
-      yeterlilik: formData.getAll("yeterlilik"),
-      adres: data.adres,
-      telefonNumarasi: data.telefonNumarasi,
-      medeniDurum: data.medeniDurum,
-      cocukSahibi: data.cocukSahibi === "on",
-      oncekiIsverenler: data.oncekiIsverenler,
-      referanslar: data.referanslar,
-      evcilHayvan: data.evcilHayvan === "on",
-      uyruk: data.uyruk,
-      oturumIzni: data.oturumIzni === "on",
-      seyahatKisitlamasi: data.seyahatKisitlamasi === "on",
-      notlar: data.notlar,
-      fotograf: fotografPath, // Add the photo path to the employee document
+      firstName: data.firstName,
+      lastName: data.lastName,
+      birthDate: new Date(data.birthDate as string),
+      competencies: formData.getAll("competencies"),
+      address: data.address,
+      phoneNumber: data.phoneNumber,
+      maritalStatus: data.maritalStatus,
+      hasChildren: data.hasChildren === "on",
+      previousEmployers: data.previousEmployers,
+      references: data.references,
+      worksWithPets: data.worksWithPets === "on",
+      nationality: data.nationality,
+      residencyPermit: data.residencyPermit === "on",
+      travelRestriction: data.travelRestriction === "on",
+      notes: data.notes,
+      photo: photoPath, // Add the photo path to the employee document
     });
 
     // Save the new employee document to the database
+    console.log("Saving employee to DB...");
     await newEmployee.save();
 
     console.log("Employee created successfully:", newEmployee);
-
-    // Revalidate and redirect
-    revalidatePath("/anasayfa/personeller");
-    redirect("/anasayfa/personeller");
   } catch (err) {
     console.error("Error creating employee:", err);
-
-    if (err instanceof Error && err.message.startsWith("NEXT_REDIRECT")) {
-      throw err;
-    } else {
-      throw new Error("Failed to create employee!");
-    }
+    throw new Error("Failed to create employee!");
   }
+  revalidatePath("/dashboard/employees");
+  redirect("/dashboard/employees");
 };
+
+export async function updateEmployee(formData: FormData) {
+  const id = formData.get("id") as string;
+
+  // Convert FormData to a plain object
+  const data = Object.fromEntries(formData.entries());
+
+  // Remove the id from the data object
+  delete data.id;
+
+  try {
+    const updatedEmployee = await Employee.findByIdAndUpdate(id, data, {
+      new: true,
+    });
+
+    if (!updatedEmployee) {
+      throw new Error("Employee not found");
+    }
+
+    console.log({ success: true, employee: updatedEmployee });
+  } catch (error) {
+    console.error("Failed to update employee:", error);
+    console.log({ success: false, error: "Failed to update employee" });
+  }
+  revalidatePath("/dashboard/employees");
+  redirect("/dashboard/employees");
+}
 
 export const deleteEmployee = async (formData: FormData) => {
   try {
     // Extract employeeId from FormData
     const employeeId = formData.get("employeeId") as string;
+    console.log(employeeId);
 
     // Connect to the database
     await connectToDB();
+    console.log("DB Connected");
 
     // Proceed as before...
     // Find the employee by ID
     const employee = await Employee.findById(employeeId);
+    console.log(employee);
 
     if (!employee) {
       throw new Error("Employee not found");
     }
 
     // If the employee has a photo, delete it from the filesystem
-    if (employee.fotograf) {
-      const absolutePath = path.join(
-        process.cwd(),
-        "public",
-        employee.fotograf,
-      );
+    if (employee.photo) {
+      const absolutePath = path.join(process.cwd(), "public", employee.photo);
       try {
         await fs.unlink(absolutePath);
         console.log("Employee photo deleted:", absolutePath);
@@ -190,15 +253,9 @@ export const deleteEmployee = async (formData: FormData) => {
     console.log("Employee deleted successfully:", employee);
 
     // Revalidate and redirect
-    revalidatePath("/anasayfa/personeller");
-    redirect("/anasayfa/personeller");
   } catch (err) {
     console.error("Error deleting employee:", err);
-
-    if (err instanceof Error && err.message.startsWith("NEXT_REDIRECT")) {
-      throw err;
-    } else {
-      throw new Error("Failed to delete employee!");
-    }
   }
+  revalidatePath("/dashboard/employees");
+  redirect("/dashboard/employees");
 };

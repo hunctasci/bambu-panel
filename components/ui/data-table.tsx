@@ -3,7 +3,6 @@ import * as React from "react";
 
 import {
   ColumnDef,
-  ColumnFiltersState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -41,9 +40,7 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
+
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [globalFilter, setGlobalFilter] = React.useState("");

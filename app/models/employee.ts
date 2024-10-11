@@ -1,13 +1,8 @@
-import mongoose, { Schema, Document } from "mongoose";
-
-// Define a type for the competency options
-type CompetencyOption = {
-  value: string;
-  label: string;
-};
+import mongoose, { Schema } from "mongoose";
+import { CompetencyOption, EmployeeType } from "@/lib/types";
 
 // Define the competency options
-const competencyOptions: CompetencyOption[] = [
+export const competencyOptions: CompetencyOption[] = [
   { value: "evIsiElemanlari", label: "Ev İşi Elemanları" },
   { value: "hastaBakimi", label: "Hasta Bakımı" },
   { value: "yasliBakimi", label: "Yaşlı Bakımı" },
@@ -21,54 +16,34 @@ const competencyOptions: CompetencyOption[] = [
   { value: "oyunAblasi", label: "Oyun Ablası" },
 ];
 
-// Update the interface to match the schema
-export interface EmployeeType extends Document {
-  ad: string; // Name
-  soyad: string; // Surname
-  dogumTarihi: Date; // Date of Birth
-  yeterlilik: string[]; // Competence (array of competency values)
-  adres: string; // Address
-  telefonNumarasi: string; // Telephone Number
-  medeniDurum?: "Evli" | "Bekar"; // Marital Status
-  cocukSahibi: boolean; // Has Children
-  oncekiIsverenler?: string; // Previous Employers
-  referanslar?: string; // References
-  evcilHayvan?: boolean; // Works With Pets
-  uyruk?: string; // Nationality
-  oturumIzni?: boolean; // Residency Permit
-  seyahatKisitlamasi?: boolean; // Travel Restriction
-  notlar?: string; // Notes
-  fotograf?: string; //
-}
-
 const EmployeeSchema = new Schema<EmployeeType>(
   {
-    ad: { type: String, required: true },
-    soyad: { type: String, required: true },
-    dogumTarihi: { type: Date, required: true },
-    yeterlilik: {
+    firstName: { type: String, required: true }, // ad
+    lastName: { type: String, required: true }, // soyad
+    birthDate: { type: Date, required: true }, // dogumTarihi
+    competencies: {
       type: [String],
       enum: competencyOptions.map((option) => option.value),
       required: true,
     },
-    adres: { type: String, required: true },
-    telefonNumarasi: { type: String, required: true },
-    medeniDurum: { type: String, enum: ["Evli", "Bekar"] },
-    cocukSahibi: { type: Boolean, default: false },
-    oncekiIsverenler: { type: String },
-    referanslar: { type: String },
-    evcilHayvan: { type: Boolean },
-    uyruk: { type: String },
-    oturumIzni: { type: Boolean },
-    seyahatKisitlamasi: { type: Boolean },
-    notlar: { type: String },
-    fotograf: { type: String },
+    address: { type: String, required: true }, // adres
+    phoneNumber: { type: String, required: true }, // telefonNumarasi
+    maritalStatus: { type: String, enum: ["Evli", "Bekar"] }, // medeniDurum
+    hasChildren: { type: Boolean, default: false }, // cocukSahibi
+    previousEmployers: { type: String }, // oncekiIsverenler
+    references: { type: String }, // referanslar
+    worksWithPets: { type: Boolean }, // evcilHayvan
+    nationality: { type: String }, // uyruk
+    residencyPermit: { type: Boolean }, // oturumIzni
+    travelRestriction: { type: Boolean }, // seyahatKisitlamasi
+    notes: { type: String }, // notlar
+    photo: { type: String }, // fotograf
   },
   { timestamps: true },
 );
 
 const Employee =
-  mongoose.models.Employee ||
+  mongoose.models?.Employee ||
   mongoose.model<EmployeeType>("Employee", EmployeeSchema);
 
 export default Employee;
