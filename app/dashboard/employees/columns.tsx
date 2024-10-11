@@ -11,7 +11,6 @@ import {
 import Link from "next/link";
 import { EmployeeType } from "@/lib/types";
 import { competencyOptions } from "@/app/models/employee";
-import { deleteEmployee } from "@/lib/actions";
 
 const getCompetencyLabel = (value: string): string => {
   const option = competencyOptions.find((opt) => opt.value === value);
