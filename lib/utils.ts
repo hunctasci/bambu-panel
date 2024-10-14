@@ -12,14 +12,7 @@ export const connectToDB = async () => {
   try {
     if (connection.isConnected) return;
 
-    const mongoUri = process.env.MONGODB_URI;
-    if (!mongoUri) {
-      throw new Error(
-        "MongoDB connection URI is missing in the environment variables.",
-      );
-    }
-
-    const db = await mongoose.connect(mongoUri);
+    const db = await mongoose.connect("mongodb://db:27017/bambuApp");
     connection.isConnected = db.connections[0].readyState;
   } catch (error) {
     console.log(error);
