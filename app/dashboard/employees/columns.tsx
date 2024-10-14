@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { EmployeeType } from "@/lib/types";
-import { competencyOptions } from "@/app/models/employee";
+import { competencyOptions } from "@/models/employee";
 
 const getCompetencyLabel = (value: string): string => {
   const option = competencyOptions.find((opt) => opt.value === value);

@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import EmployeeActions from "@/components/Employee/EmployeeActions"; // Import the client component
 import EmployeeDetails from "@/components/Employee/EmployeeDetails";
-import { competencyOptions } from "@/app/models/employee";
+import { competencyOptions } from "@/models/employee";
 
 type Params = {
   params: {

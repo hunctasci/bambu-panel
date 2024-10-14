@@ -7,15 +7,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const connectToDB = async () => {
-  const connection: { isConnected?: number } = {};
-
   try {
-    if (connection.isConnected) return;
-
-    const db = await mongoose.connect(process.env.MONGO!);
-    connection.isConnected = db.connections[0].readyState;
+    const { connection } = await mongoose.connect(process.env.MONGO!);
+    if (connection.readyState === 1) {
+      return Promise.resolve(true);
+    }
   } catch (error) {
-    console.log(error);
-    console.error("Failed to connect to MongoDB", error);
+    console.error(error);
+    return Promise.reject(error);
   }
 };

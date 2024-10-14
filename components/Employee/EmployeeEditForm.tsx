@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { isValid, parse } from "date-fns";
-import { competencyOptions } from "@/app/models/employee";
+import { competencyOptions } from "@/models/employee";
 import { updateEmployee } from "@/lib/actions";
 
 const MAX_FILE_SIZE = 5000000;
