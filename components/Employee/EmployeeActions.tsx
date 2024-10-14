@@ -1,10 +1,13 @@
 "use client";
 
-import { jsPDF } from "jspdf";
 import { Button } from "@/components/ui/button";
 import { EmployeeType } from "@/lib/types";
 import { deleteEmployee } from "@/lib/actions";
 import Link from "next/link";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts"; // Import the fonts for utf-8 support
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 type EmployeeActionsProps = {
   employee: EmployeeType;
@@ -32,58 +35,58 @@ export default function EmployeeActions({
   };
 
   const generatePdf = async () => {
-    const doc = new jsPDF();
-    doc.setFontSize(18);
-    doc.text(`${employee.firstName} ${employee.lastName} - Detayları`, 10, 10);
-    doc.setFontSize(12);
-    doc.text(`Ad: ${employee.firstName}`, 10, 20);
-    doc.text(`Soyad: ${employee.lastName}`, 10, 30);
-    doc.text(
-      `Doğum Tarihi: ${new Date(employee.birthDate).toLocaleDateString("tr-TR")}`,
-      10,
-      40,
-    );
-    doc.text(`Adres: ${employee.address}`, 10, 50);
-    doc.text(`Telefon Numarası: ${employee.phoneNumber}`, 10, 60);
-    doc.text(`Medeni Durum: ${employee.maritalStatus}`, 10, 70);
-    doc.text(
-      `Yeterlilikler: ${employee.competencies
-        .map(getCompetencyLabel)
-        .join(", ")}`,
-      10,
-      80,
-    );
-    doc.text(
-      `Evcil Hayvanla Çalışır: ${employee.worksWithPets ? "Evet" : "Hayır"}`,
-      10,
-      90,
-    );
-    doc.text(`Uyruk: ${employee.nationality}`, 10, 100);
-    doc.text(
-      `Oturum İzni: ${employee.residencyPermit ? "Var" : "Yok"}`,
-      10,
-      110,
-    );
-    doc.text(
-      `Seyahat Kısıtlaması: ${employee.travelRestriction ? "Var" : "Yok"}`,
-      10,
-      120,
-    );
-    doc.text(
-      `Çocuk Sahibi: ${employee.hasChildren ? "Evet" : "Hayır"}`,
-      10,
-      130,
-    );
-    doc.text(`Önceki İşverenler: ${employee.previousEmployers}`, 10, 140);
-    doc.text(`Referanslar: ${employee.references}`, 10, 150);
-    doc.text(`Notlar: ${employee.notes}`, 10, 170);
+    const docDefinition: any = {
+      content: [
+        {
+          text: `${employee.firstName} ${employee.lastName} - Detayları`,
+          style: "header",
+        },
+        { text: `Ad: ${employee.firstName}` },
+        { text: `Soyad: ${employee.lastName}` },
+        {
+          text: `Doğum Tarihi: ${new Date(employee.birthDate).toLocaleDateString("tr-TR")}`,
+        },
+        { text: `Adres: ${employee.address}` },
+        { text: `Telefon Numarası: ${employee.phoneNumber}` },
+        { text: `Medeni Durum: ${employee.maritalStatus}` },
+        {
+          text: `Yeterlilikler: ${employee.competencies.map(getCompetencyLabel).join(", ")}`,
+        },
+        {
+          text: `Evcil Hayvanla Çalışır: ${employee.worksWithPets ? "Evet" : "Hayır"}`,
+        },
+        { text: `Uyruk: ${employee.nationality}` },
+        { text: `Oturum İzni: ${employee.residencyPermit ? "Var" : "Yok"}` },
+        {
+          text: `Seyahat Kısıtlaması: ${employee.travelRestriction ? "Var" : "Yok"}`,
+        },
+        { text: `Çocuk Sahibi: ${employee.hasChildren ? "Evet" : "Hayır"}` },
+        { text: `Önceki İşverenler: ${employee.previousEmployers}` },
+        { text: `Referanslar: ${employee.references}` },
+        { text: `Notlar: ${employee.notes}` },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          margin: [0, 0, 0, 10],
+        },
+      },
+    };
 
+    // If there's an employee photo, add it to the PDF
     if (employee.photo) {
       const imageBase64 = await convertImageToBase64(employee.photo);
-      doc.addImage(imageBase64, "JPEG", 150, 10, 40, 40); // x, y, width, height
+      docDefinition.content.push({
+        image: imageBase64,
+        width: 150,
+        height: 150,
+      });
     }
 
-    doc.save(`${employee.firstName}_${employee.lastName}_detaylar.pdf`);
+    pdfMake
+      .createPdf(docDefinition)
+      .download(`${employee.firstName}_${employee.lastName}_detaylar.pdf`);
   };
 
   const handleDeleteEmployee = async () => {

@@ -1,9 +1,12 @@
 "use client";
 
-import { jsPDF } from "jspdf";
 import { Button } from "@/components/ui/button";
 import { EmployerType } from "@/lib/types";
 import Link from "next/link";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts"; // Import the fonts for utf-8 support
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 type EmployerActionsProps = {
   employer: EmployerType;
@@ -14,34 +17,42 @@ export default function EmployerActions({
   employer,
   deleteEmployer,
 }: EmployerActionsProps) {
-  // Function to generate the PDF
+  // Function to generate the PDF using pdfMake
   const generatePdf = () => {
-    const doc = new jsPDF();
+    const docDefinition: any = {
+      content: [
+        {
+          text: `${employer.firstName} ${employer.lastName} - Detaylar`,
+          style: "header",
+        },
+        { text: `Ad: ${employer.firstName}` },
+        { text: `Soyad: ${employer.lastName}` },
+        {
+          text: `Doğum Tarihi: ${new Date(
+            employer.birthDate,
+          ).toLocaleDateString("tr-TR")}`,
+        },
+        { text: `Adres: ${employer.address}` },
+        { text: `Telefon Numarası: ${employer.phoneNumber}` },
+        { text: `Yer Tipi: ${employer.placeType}` },
+        { text: `Evcil Hayvan: ${employer.hasPets ? "Evet" : "Hayır"}` },
+        { text: `Sağlık Durumu: ${employer.healthCondition}` },
+        { text: `Çocuklar: ${employer.children}` },
+        { text: `Kilo: ${employer.weight} kg` },
+        { text: `Notlar: ${employer.notes}` },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          margin: [0, 0, 0, 10],
+        },
+      },
+    };
 
-    // Add title
-    doc.setFontSize(18);
-    doc.text(`${employer.firstName} ${employer.lastName} - Detaylar`, 10, 10);
-
-    // Add employer details to the PDF
-    doc.setFontSize(12);
-    doc.text(`Ad: ${employer.firstName}`, 10, 20);
-    doc.text(`Soyad: ${employer.lastName}`, 10, 30);
-    doc.text(
-      `Doğum Tarihi: ${new Date(employer.birthDate).toLocaleDateString("tr-TR")}`,
-      10,
-      40,
-    );
-    doc.text(`Adres: ${employer.address}`, 10, 50);
-    doc.text(`Telefon Numarası: ${employer.phoneNumber}`, 10, 60);
-    doc.text(`Yer Tipi: ${employer.placeType}`, 10, 70);
-    doc.text(`Evcil Hayvan: ${employer.hasPets ? "Evet" : "Hayır"}`, 10, 80);
-    doc.text(`Sağlık Durumu: ${employer.healthCondition}`, 10, 90);
-    doc.text(`Çocuklar: ${employer.children}`, 10, 100);
-    doc.text(`Kilo: ${employer.weight} kg`, 10, 110);
-    doc.text(`Notlar: ${employer.notes}`, 10, 120);
-
-    // Save the generated PDF
-    doc.save(`${employer.firstName}_${employer.lastName}_detaylar.pdf`);
+    pdfMake
+      .createPdf(docDefinition)
+      .download(`${employer.firstName}_${employer.lastName}_detaylar.pdf`);
   };
 
   // Function to handle form submission and delete the employer
