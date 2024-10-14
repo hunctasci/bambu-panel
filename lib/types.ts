@@ -37,3 +37,8 @@ export interface EmployerType {
   weight: number; // Weight
   notes: string; // Notes
 }
+
+export interface UserType {
+  username: string;
+  password: string;
+}
