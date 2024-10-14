@@ -25,28 +25,67 @@ export default function EmployerActions({
           text: `${employer.firstName} ${employer.lastName} - Detaylar`,
           style: "header",
         },
-        { text: `Ad: ${employer.firstName}` },
-        { text: `Soyad: ${employer.lastName}` },
         {
-          text: `Doğum Tarihi: ${new Date(
-            employer.birthDate,
-          ).toLocaleDateString("tr-TR")}`,
+          style: "tableExample",
+          table: {
+            widths: ["30%", "70%"],
+            body: [
+              [{ text: "Ad", style: "tableHeader" }, employer.firstName],
+              [{ text: "Soyad", style: "tableHeader" }, employer.lastName],
+              [
+                { text: "Doğum Tarihi", style: "tableHeader" },
+                new Date(employer.birthDate).toLocaleDateString("tr-TR"),
+              ],
+              [{ text: "Adres", style: "tableHeader" }, employer.address],
+              [
+                { text: "Telefon Numarası", style: "tableHeader" },
+                employer.phoneNumber,
+              ],
+              [{ text: "Yer Tipi", style: "tableHeader" }, employer.placeType],
+              [
+                { text: "Evcil Hayvan", style: "tableHeader" },
+                employer.hasPets ? "Evet" : "Hayır",
+              ],
+              [
+                { text: "Sağlık Durumu", style: "tableHeader" },
+                employer.healthCondition,
+              ],
+              [{ text: "Çocuklar", style: "tableHeader" }, employer.children],
+              [{ text: "Kilo", style: "tableHeader" }, `${employer.weight} kg`],
+            ],
+          },
         },
-        { text: `Adres: ${employer.address}` },
-        { text: `Telefon Numarası: ${employer.phoneNumber}` },
-        { text: `Yer Tipi: ${employer.placeType}` },
-        { text: `Evcil Hayvan: ${employer.hasPets ? "Evet" : "Hayır"}` },
-        { text: `Sağlık Durumu: ${employer.healthCondition}` },
-        { text: `Çocuklar: ${employer.children}` },
-        { text: `Kilo: ${employer.weight} kg` },
-        { text: `Notlar: ${employer.notes}` },
+        { text: "Notlar", style: "subheader" },
+        { text: employer.notes, style: "notes" },
       ],
       styles: {
         header: {
           fontSize: 18,
           bold: true,
           margin: [0, 0, 0, 10],
+          color: "#2c3e50",
         },
+        subheader: {
+          fontSize: 14,
+          bold: true,
+          margin: [0, 10, 0, 5],
+          color: "#34495e",
+        },
+        tableExample: {
+          margin: [0, 5, 0, 15],
+        },
+        tableHeader: {
+          bold: true,
+          color: "#3498db",
+        },
+        notes: {
+          italic: true,
+          margin: [0, 0, 0, 10],
+        },
+      },
+      defaultStyle: {
+        fontSize: 10,
+        color: "#333",
       },
     };
 

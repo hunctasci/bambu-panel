@@ -38,51 +38,111 @@ export default function EmployeeActions({
     const docDefinition: any = {
       content: [
         {
-          text: `${employee.firstName} ${employee.lastName} - Detayları`,
-          style: "header",
+          columns: [
+            {
+              width: "*",
+              stack: [
+                {
+                  text: `${employee.firstName} ${employee.lastName}`,
+                  style: "header",
+                },
+                { text: "Çalışan Detayları", style: "subheader" },
+              ],
+            },
+            {
+              width: "auto",
+              image: employee.photo
+                ? await convertImageToBase64(employee.photo)
+                : undefined,
+              fit: [100, 100],
+              alignment: "right",
+            },
+          ],
         },
-        { text: `Ad: ${employee.firstName}` },
-        { text: `Soyad: ${employee.lastName}` },
+        { text: "\n" },
         {
-          text: `Doğum Tarihi: ${new Date(employee.birthDate).toLocaleDateString("tr-TR")}`,
+          style: "table",
+          table: {
+            widths: ["30%", "70%"],
+            body: [
+              [{ text: "Ad", style: "tableHeader" }, employee.firstName],
+              [{ text: "Soyad", style: "tableHeader" }, employee.lastName],
+              [
+                { text: "Doğum Tarihi", style: "tableHeader" },
+                new Date(employee.birthDate).toLocaleDateString("tr-TR"),
+              ],
+              [{ text: "Adres", style: "tableHeader" }, employee.address],
+              [
+                { text: "Telefon Numarası", style: "tableHeader" },
+                employee.phoneNumber,
+              ],
+              [
+                { text: "Medeni Durum", style: "tableHeader" },
+                employee.maritalStatus,
+              ],
+              [
+                { text: "Yeterlilikler", style: "tableHeader" },
+                employee.competencies.map(getCompetencyLabel).join(", "),
+              ],
+              [
+                { text: "Evcil Hayvanla Çalışır", style: "tableHeader" },
+                employee.worksWithPets ? "Evet" : "Hayır",
+              ],
+              [{ text: "Uyruk", style: "tableHeader" }, employee.nationality],
+              [
+                { text: "Oturum İzni", style: "tableHeader" },
+                employee.residencyPermit ? "Var" : "Yok",
+              ],
+              [
+                { text: "Seyahat Kısıtlaması", style: "tableHeader" },
+                employee.travelRestriction ? "Var" : "Yok",
+              ],
+              [
+                { text: "Çocuk Sahibi", style: "tableHeader" },
+                employee.hasChildren ? "Evet" : "Hayır",
+              ],
+            ],
+          },
         },
-        { text: `Adres: ${employee.address}` },
-        { text: `Telefon Numarası: ${employee.phoneNumber}` },
-        { text: `Medeni Durum: ${employee.maritalStatus}` },
-        {
-          text: `Yeterlilikler: ${employee.competencies.map(getCompetencyLabel).join(", ")}`,
-        },
-        {
-          text: `Evcil Hayvanla Çalışır: ${employee.worksWithPets ? "Evet" : "Hayır"}`,
-        },
-        { text: `Uyruk: ${employee.nationality}` },
-        { text: `Oturum İzni: ${employee.residencyPermit ? "Var" : "Yok"}` },
-        {
-          text: `Seyahat Kısıtlaması: ${employee.travelRestriction ? "Var" : "Yok"}`,
-        },
-        { text: `Çocuk Sahibi: ${employee.hasChildren ? "Evet" : "Hayır"}` },
-        { text: `Önceki İşverenler: ${employee.previousEmployers}` },
-        { text: `Referanslar: ${employee.references}` },
-        { text: `Notlar: ${employee.notes}` },
+        { text: "\n" },
+        { text: "Önceki İşverenler", style: "subheader" },
+        { text: employee.previousEmployers, style: "paragraph" },
+        { text: "\n" },
+        { text: "Referanslar", style: "subheader" },
+        { text: employee.references, style: "paragraph" },
+        { text: "\n" },
+        { text: "Notlar", style: "subheader" },
+        { text: employee.notes, style: "paragraph" },
       ],
       styles: {
         header: {
           fontSize: 18,
           bold: true,
+          color: "#2c3e50",
           margin: [0, 0, 0, 10],
         },
+        subheader: {
+          fontSize: 14,
+          bold: true,
+          color: "#34495e",
+          margin: [0, 10, 0, 5],
+        },
+        table: {
+          margin: [0, 5, 0, 15],
+        },
+        tableHeader: {
+          bold: true,
+          color: "#3498db",
+        },
+        paragraph: {
+          margin: [0, 5, 0, 10],
+        },
+      },
+      defaultStyle: {
+        fontSize: 10,
+        color: "#333",
       },
     };
-
-    // If there's an employee photo, add it to the PDF
-    if (employee.photo) {
-      const imageBase64 = await convertImageToBase64(employee.photo);
-      docDefinition.content.push({
-        image: imageBase64,
-        width: 150,
-        height: 150,
-      });
-    }
 
     pdfMake
       .createPdf(docDefinition)
