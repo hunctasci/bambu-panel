@@ -3,13 +3,14 @@
 import { competencyOptions } from "@/app/models/employee";
 import { EmployeeType } from "@/lib/types"; // Adjust the import path as needed
 import Image from "next/image";
+import { ReactNode } from "react";
 
 interface EmployeeDetailsProps {
   employee: EmployeeType;
 }
 interface InfoItemProps {
   label: string;
-  value: unknown;
+  value: ReactNode;
 }
 
 const InfoItem = ({ label, value }: InfoItemProps) => (
