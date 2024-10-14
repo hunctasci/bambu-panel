@@ -9,6 +9,7 @@ import Link from "next/link";
 type EmployeeActionsProps = {
   employee: EmployeeType;
   competencyOptions: { value: string; label: string }[];
+  deleteEmployee: (formData: FormData) => Promise<never>;
 };
 
 export default function EmployeeActions({
