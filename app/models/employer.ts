@@ -23,6 +23,6 @@ const EmployerSchema = new Schema<EmployerType>(
 );
 
 const Employer =
-  mongoose.models.Employer ||
+  mongoose.models?.Employer ||
   mongoose.model<EmployerType>("Employer", EmployerSchema);
 export default Employer;
