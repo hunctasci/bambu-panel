@@ -26,6 +26,14 @@ import { isValid, parse } from "date-fns";
 import { competencyOptions } from "@/app/models/employee";
 import { updateEmployee } from "@/lib/actions";
 
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
 const employeeFormSchema = z.object({
   firstName: z.string().min(2, { message: "Ad en az 2 karakter olmalı." }),
   lastName: z.string().min(2, { message: "Soyad en az 2 karakter olmalı." }),
@@ -52,6 +60,21 @@ const employeeFormSchema = z.object({
   residencyPermit: z.boolean(),
   travelRestriction: z.boolean(),
   notes: z.string().optional(),
+  photo: z
+    .any()
+    .optional()
+    .refine(
+      (files) =>
+        !files || files.length === 0 || files[0]?.size <= MAX_FILE_SIZE,
+      `Maksimum dosya boyutu 5MB.`,
+    )
+    .refine(
+      (files) =>
+        !files ||
+        files.length === 0 ||
+        ACCEPTED_IMAGE_TYPES.includes(files[0]?.type),
+      "Sadece .jpg, .jpeg, .png ve .webp formatları kabul edilir.",
+    ),
 });
 
 type EmployeeFormData = z.infer<typeof employeeFormSchema>;
@@ -95,6 +118,12 @@ export default function EmployeeEditForm({ employee }: EmployeeEditFormProps) {
           formData.append(key, `${year}-${month}-${day}`);
         } else if (Array.isArray(value)) {
           value.forEach((item) => formData.append(key, item));
+        } else if (key === "photo" && value instanceof FileList) {
+          // Log file details
+          const file = value[0];
+
+          // Append file to FormData
+          formData.append(key, file);
         } else {
           formData.append(key, value.toString());
         }
@@ -394,6 +423,27 @@ export default function EmployeeEditForm({ employee }: EmployeeEditFormProps) {
               <FormLabel>Notlar</FormLabel>
               <FormControl>
                 <Input placeholder="Ek notlar" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="photo" // Ensure this matches your API expectation
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Fotoğraf (Opsiyonel)</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept={ACCEPTED_IMAGE_TYPES.join(",")}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    field.onChange(file ? e.target.files : undefined); // Handle optional field
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
