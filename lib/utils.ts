@@ -12,7 +12,7 @@ export const connectToDB = async () => {
   try {
     if (connection.isConnected) return;
 
-    const db = await mongoose.connect("mongodb://db:27017/bambuApp");
+    const db = await mongoose.connect(process.env.MONGO);
     connection.isConnected = db.connections[0].readyState;
   } catch (error) {
     console.log(error);

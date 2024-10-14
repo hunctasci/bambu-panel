@@ -195,13 +195,19 @@ export async function updateEmployee(formData: FormData) {
   // Convert FormData to a plain object
   const data = Object.fromEntries(formData.entries());
 
+  // Handle competencies separately as it needs to be an array
+  const competencies = formData.getAll("competencies");
+
   // Remove the id from the data object
   delete data.id;
 
   try {
-    const updatedEmployee = await Employee.findByIdAndUpdate(id, data, {
-      new: true,
-    });
+    // Update the employee document, ensuring competencies is an array
+    const updatedEmployee = await Employee.findByIdAndUpdate(
+      id,
+      { ...data, competencies },
+      { new: true },
+    );
 
     if (!updatedEmployee) {
       throw new Error("Employee not found");
@@ -212,6 +218,7 @@ export async function updateEmployee(formData: FormData) {
     console.error("Failed to update employee:", error);
     console.log({ success: false, error: "Failed to update employee" });
   }
+
   revalidatePath("/dashboard/employees");
   redirect("/dashboard/employees");
 }
