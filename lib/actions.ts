@@ -5,7 +5,7 @@ import Employer from "@/app/models/employer";
 import { redirect } from "next/navigation";
 import Employee from "@/app/models/employee";
 import path from "path";
-import fs from "fs/promises";
+import fs, { appendFile } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
 
 export const addEmployer = async (formData: FormData) => {
@@ -83,8 +83,8 @@ export async function updateEmployer(formData: FormData) {
     // Instead of console.log, throw an error to be caught by the client
     throw new Error("Failed to update employer");
   }
-  revalidatePath("/dashboard/employers");
-  redirect("/dashboard/employers");
+  revalidatePath(`/dashboard/employers/${id}`);
+  redirect(`/dashboard/employers/${id}`);
 }
 
 export const deleteEmployer = async (formData: FormData) => {
@@ -202,6 +202,36 @@ export async function updateEmployee(formData: FormData) {
   delete data.id;
 
   try {
+    // Fetch the current employee to check for an existing photo
+    const currentEmployee = await Employee.findById(id);
+    if (!currentEmployee) {
+      throw new Error("Employee not found");
+    }
+
+    // Handle photo upload
+    const photo = formData.get("photo") as File;
+    if (photo && photo.size > 0) {
+      // If there's an existing photo, delete it
+      if (currentEmployee.photo) {
+        const existingPhotoPath = path.join(
+          process.cwd(),
+          "public",
+          currentEmployee.photo,
+        );
+        await fs.unlink(existingPhotoPath).catch(console.error);
+      }
+
+      // Upload the new photo
+      const fileName = `${Date.now()}_${photo.name}`;
+      const filePath = path.join(process.cwd(), "public", "uploads", fileName);
+      const arrayBuffer = await photo.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      await appendFile(filePath, buffer);
+
+      // Update the photo path in the data object
+      data.photo = `/uploads/${fileName}`;
+    }
+
     // Update the employee document, ensuring competencies is an array
     const updatedEmployee = await Employee.findByIdAndUpdate(
       id,
@@ -219,8 +249,8 @@ export async function updateEmployee(formData: FormData) {
     console.log({ success: false, error: "Failed to update employee" });
   }
 
-  revalidatePath("/dashboard/employees");
-  redirect("/dashboard/employees");
+  revalidatePath(`/dashboard/employees/${id}`);
+  redirect(`/dashboard/employees/${id}`);
 }
 
 export const deleteEmployee = async (formData: FormData) => {
