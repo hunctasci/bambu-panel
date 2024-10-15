@@ -1,6 +1,6 @@
-import Employer from "@/models/employer";
+import Employer from "@/models/Employer";
 import { connectToDB } from "./utils";
-import Employee from "@/models/employee";
+import Employee from "@/models/Employee";
 
 export const fetchEmployers = async () => {
   try {

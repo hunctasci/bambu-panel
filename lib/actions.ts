@@ -1,9 +1,9 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { connectToDB } from "./utils";
-import Employer from "@/models/employer";
+import Employer from "@/models/Employer";
 import { redirect } from "next/navigation";
-import Employee from "@/models/employee";
+import Employee from "@/models/Employee";
 import path from "path";
 import fs, { appendFile } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";

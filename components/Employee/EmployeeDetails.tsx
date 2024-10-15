@@ -1,6 +1,6 @@
 // components/EmployeeDetails.tsx
 
-import { competencyOptions } from "@/models/employee";
+import { competencyOptions } from "@/models/Employee";
 import { EmployeeType } from "@/lib/types"; // Adjust the import path as needed
 import Image from "next/image";
 import { ReactNode } from "react";
