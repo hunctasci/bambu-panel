@@ -7,6 +7,11 @@ import Employee from "@/models/Employee";
 import path from "path";
 import fs, { appendFile } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
+import { signIn } from "@/auth";
+import { signOut } from "@/auth";
+import { AuthError } from "next-auth";
+import User from "@/models/User";
+import bcrypt from "bcrypt";
 
 export const addEmployer = async (formData: FormData) => {
   try {
@@ -296,3 +301,58 @@ export const deleteEmployee = async (formData: FormData) => {
   revalidatePath("/dashboard/employees");
   redirect("/dashboard/employees");
 };
+
+export const authenticate = async (
+  prevState: string | undefined,
+  formData: FormData,
+) => {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Invalid credentials.";
+        default:
+          return "Something went wrong.";
+      }
+    }
+    throw error;
+  }
+};
+
+export const registerUser = async ({
+  username,
+  email,
+  password,
+}: {
+  username: string;
+  email: string;
+  password: string;
+}) => {
+  try {
+    await connectToDB();
+    const userFound = await User.findOne({ email });
+    if (userFound) {
+      return {
+        error: "Email already exists!",
+      };
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({
+      username,
+      email,
+      password: hashedPassword,
+    });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const savedUser = await user.save();
+    return { success: true };
+  } catch (e) {
+    console.error(e);
+    return { error: "An error occurred during registration" };
+  }
+};
+
+export async function signOutAction() {
+  await signOut();
+}

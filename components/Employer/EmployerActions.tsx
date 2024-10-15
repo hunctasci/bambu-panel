@@ -19,6 +19,7 @@ export default function EmployerActions({
 }: EmployerActionsProps) {
   // Function to generate the PDF using pdfMake
   const generatePdf = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const docDefinition: any = {
       content: [
         {

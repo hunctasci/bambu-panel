@@ -39,6 +39,7 @@ export interface EmployerType {
 }
 
 export interface UserType {
+  email: string;
   username: string;
   password: string;
 }

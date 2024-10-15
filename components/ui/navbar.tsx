@@ -4,6 +4,8 @@ import { usePathname } from "next/navigation";
 
 import Link from "next/link";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import SignOut from "./signOut";
+import { Suspense } from "react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -42,6 +44,9 @@ export default function Navbar() {
 
       <div className="flex gap-3">
         <ModeToggle />
+        <Suspense>
+          <SignOut />
+        </Suspense>
       </div>
     </div>
   );
