@@ -209,20 +209,21 @@ export async function updateEmployee(formData: FormData) {
         const existingPhotoPath = path.join(
           process.cwd(),
           "public",
-          currentEmployee.photo,
+          currentEmployee.photo.replace('/api/public', '')
         );
         await fs.unlink(existingPhotoPath).catch(console.error);
       }
 
       // Upload the new photo
       const fileName = `${Date.now()}_${photo.name}`;
-      const filePath = path.join(process.cwd(), "public", "uploads", fileName);
+      const relativePath = `/uploads/${fileName}`;
+      const filePath = path.join(process.cwd(), "public", relativePath);
       const arrayBuffer = await photo.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
       await appendFile(filePath, buffer);
 
-      // Update the photo path in the data object
-      data.photo = `/uploads/${fileName}`;
+      // Update the photo path in the data object to use the API route
+      data.photo = `/api/public${relativePath}`;
     }
 
     // Update the employee document, ensuring competencies is an array
@@ -307,6 +308,7 @@ export const authenticate = async (
     }
     throw error;
   }
+  redirect("/dashboard")
 };
 
 export const registerUser = async ({
