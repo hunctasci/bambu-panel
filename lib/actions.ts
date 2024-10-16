@@ -124,11 +124,8 @@ export const deleteEmployer = async (formData: FormData) => {
 export const addEmployee = async (formData: FormData) => {
   await connectToDB();
   try {
-    // Connect to the database
-    console.log("Connecting to DB...");
     console.log("Connected to DB");
 
-    // Extract and process form data
     const data = Object.fromEntries(formData.entries());
     console.log("Form data extracted:", data);
 
@@ -140,28 +137,20 @@ export const addEmployee = async (formData: FormData) => {
       const fileBuffer = await file.arrayBuffer();
       console.log("File buffer created");
 
-      // Create a unique filename
       const uniqueFilename = `${uuidv4()}_${file.name}`;
-      console.log(uniqueFilename);
       const relativePath = `/uploads/${uniqueFilename}`;
-      console.log(relativePath);
       const absolutePath = path.join(process.cwd(), "public", relativePath);
-      console.log("absolutePath", absolutePath);
 
-      // Ensure the uploads directory exists
       await fs.mkdir(path.dirname(absolutePath), { recursive: true });
-      console.log("Directory created or already exists");
-
-      // Write the file
-      await fs.appendFile(absolutePath, Buffer.from(fileBuffer));
+      await fs.writeFile(absolutePath, Buffer.from(fileBuffer));
       console.log("File saved at:", absolutePath);
 
-      photoPath = relativePath;
+      // Use the API route path instead of the direct file path
+      photoPath = `/api/public${relativePath}`;
     } else {
       console.log("No photo file found, skipping upload process");
     }
 
-    // Create a new employee document
     const newEmployee = new Employee({
       firstName: data.firstName,
       lastName: data.lastName,
@@ -178,10 +167,9 @@ export const addEmployee = async (formData: FormData) => {
       residencyPermit: data.residencyPermit === "on",
       travelRestriction: data.travelRestriction === "on",
       notes: data.notes,
-      photo: photoPath, // Add the photo path to the employee document
+      photo: photoPath, // This now points to the API route
     });
 
-    // Save the new employee document to the database
     console.log("Saving employee to DB...");
     await newEmployee.save();
 
