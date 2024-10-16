@@ -10,7 +10,8 @@ services:
       - 3000:3000
 
     environment:
-      - MONGODB_URI=mongodb://db:27017/bambuApp
+      - MONGO=mongodb://db:27017/bambuApp
+      - AUTH_SECRET=DxV1cpZMU8fY0TDQ/SyuNAauSMHzVo3a000fe+gD2RI=
 
     develop:
       watch:
